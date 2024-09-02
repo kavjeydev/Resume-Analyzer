@@ -1,0 +1,170 @@
+.outer_div{
+    top: 150px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    gap: 40px;
+
+    background-color: rgb(12, 12, 12);
+}
+
+.header_one{
+    width: 700px;
+    font-size: 45px;
+
+    line-height: 55px;
+
+    text-align: center;
+}
+
+.signin_google{
+    display: flex;
+    padding: 10px;
+    height: 50px;
+    width: 400px;
+    gap: 5px;
+
+    font-size: 14px;
+
+    background-color: rgb(28, 28, 28);
+    color: rgb(147, 147, 147);
+    border-radius: 7px;
+
+    align-items: center;
+    justify-content: center;
+    z-index: 900;
+
+    transition-duration: 0.3s;
+    border-bottom: 1px solid rgb(28, 28, 28);
+}
+
+.signin_google:hover{
+    background-color: rgb(67, 61, 50);
+    border-bottom: 1px solid rgb(133, 133, 133);
+    transition-duration: 0.3s;
+}
+
+.sign_email{
+    font-size: 16px;
+    color: gray;
+}
+
+.closer_links{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    align-items: center;
+
+}
+
+.outer_form{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 400px;
+
+    font-size: 14px;
+
+}
+
+.submit{
+    width: 400px;
+    height: 45px;
+    border-radius: 8px;
+    background-color: #FE6021;
+
+    border-bottom: 1px solid black;
+
+    transition-duration: 0.3s;
+}
+
+.submit:hover{
+    background-color: #fe8f21;
+    transition-duration: 0.3s;
+    border-bottom: 1px solid rgb(255, 255, 255);
+}
+
+.typing_field{
+    padding: 10px;
+    height: 42px;
+    background-color: rgb(28, 28, 28);
+
+    border-radius: 5px;
+    transition-duration: 0.15s;
+
+    outline: 1px solid black;
+    border-bottom: 1px solid rgb(70, 70, 70);
+
+
+}
+
+.typing_field:focus{
+    background-color: rgb(50, 50, 50);
+    outline: 1px solid rgb(12, 12, 12);
+    border-bottom: 1px solid #fe8f21;
+    transition-duration: 0.15s;
+
+
+}
+
+.final_container{
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+
+    font-size: 14px;
+
+    align-items: center;
+}
+
+.checkbox{
+    display: flex;
+
+    gap: 8px;
+    width: 400px;
+
+    color: gray;
+
+    font-size: 14px;
+
+    align-items: center;
+
+
+}
+
+.checkbox_input{
+    color: rgb(255, 255, 255);
+    height: 15px;
+    width: 15px;
+    cursor: pointer;
+
+    border-radius: 2px;
+
+    /* outline: 1px solid gray; */
+
+    accent-color: #fe8f21;
+}
+.no_account{
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+
+}
+
+.question{
+    color: gray;
+    width: 198px;
+}
+
+.action{
+    color: white;
+    transition-duration: 0.2s;
+}
+.action:hover{
+    color: #FE6021;
+    transition-duration: 0.2s;
+}
