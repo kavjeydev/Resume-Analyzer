@@ -4,7 +4,6 @@
     flex-direction: column;
     position: absolute;
     width: 100%;
-    height: 100%;
     align-items: center;
     gap: 40px;
 
@@ -48,6 +47,18 @@
     color: white;
 }
 
+.emphasize_click{
+    color: #FE6021;
+    transition-duration: 0.2s;
+
+}
+
+.emphasize_click:hover{
+    color: yellow;
+    transition-duration: 0.2s;
+
+}
+
 .get_started{
     display: flex;
     text-align: center;
@@ -78,6 +89,7 @@
     width: 100%;
     display: flex;
     flex-direction: row;
+    padding-bottom: 100px;
 }
 
 .left_col{
@@ -86,9 +98,9 @@
     gap: 25px;
 
     padding-top: 100px;
-    padding-left: 150px;
+    padding-left: 120px;
     width: 50%;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .right_col{
@@ -96,7 +108,7 @@
     padding-top: 100px;
     padding-left: 190px;
     width: 50%;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .para_heading{
@@ -109,7 +121,7 @@
 .left_para{
     color: gray;
 
-    width: 400px;
+    width:500px;
 
 }
 
@@ -117,4 +129,39 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
+}
+
+.para_heading_third{
+    text-align: center;
+
+    font-size: 36px;
+    line-height: 45px;
+    font-weight: 500;
+    width: 700px;
+    color:white;
+}
+
+
+.para_third{
+    color: gray;
+    text-align: center;
+    width:700px;
+
+}
+
+.paragraph_container_third{
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    gap: 25px;
+}
+
+.third_section_div{
+    padding-top: 80px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 40px;
 }

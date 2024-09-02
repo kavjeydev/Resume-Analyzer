@@ -1,6 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css"
 import Link from "next/link";
+import Footer from "./footer/footer";
 
 export default function Home() {
   return (
@@ -29,10 +30,11 @@ export default function Home() {
             <div className={styles.paragraph_container}>
 
 
-              <p className={styles.left_para}>Get detailed insight for <span className={styles.emphasize}>every resume</span> and <span className={styles.emphasize}>every job application </span>
-              and what skills you can add to stand out against the rest. You're no longer in the dark, know exactly how to <span className={styles.emphasize}>land interviews. </span> </p>
-              <p className={styles.left_para}>Get detailed insight for <span className={styles.emphasize}>every resume</span> and <span className={styles.emphasize}>every job application </span>
-              and what skills you can add to stand out against the rest. </p>
+              <p className={styles.left_para}>
+              Quixotic bridges the gap between job seekers and employers by ensuring that <span className={styles.emphasize}>qualifications and expectations align perfectly</span> by
+              leveraging advanced algorithms and industry insights.</p>
+              <p className={styles.left_para}>Simultaneously, we analyze job listings to identify
+              <span className={styles.emphasize}> essential criteria and desired attributes</span> which enhances creates a more efficient hiring process for both parties.</p>
 
             </div>
 
@@ -46,6 +48,27 @@ export default function Home() {
         </div>
 
 
+        <div className={styles.third_section_div}>
+
+            <h1 className={styles.para_heading_third}>See how Quixotic was created</h1>
+            <div className={styles.paragraph_container_third}>
+
+
+              <p className={styles.para_third}>
+                Quixotic is created for the hopes of making job description tailored resumes a little bit easier.
+                If you have any questions about how it works or what data it collects take a look at our <Link href="/faq" className={styles.para_third}>Check out the
+                <span className={styles.emphasize_click}> FAQ</span></Link> or email us directly.
+              </p>
+              <Link href="https://github.com/kavjeydev/Resume-Analyzer" className={styles.para_third} target="_blank">Check out the
+              <span className={styles.emphasize_click}> GitHub repository</span>. Everything is public!</Link>
+
+            </div>
+
+
+        </div>
+
+
+        <Footer />
       </div>
     </div>
   );

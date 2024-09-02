@@ -14,7 +14,7 @@ export default function Navbar(){
                     </div>
 
                     <div className={styles.small_links_cont}>
-                        <Link href="https://www.github.com/kavjeydev" className={styles.small_button} target="_blank">
+                        <Link href="https://github.com/kavjeydev/Resume-Analyzer" className={styles.small_button} target="_blank">
                             Github ⭐
                         </Link>
                         <Link href="/faq" className={styles.small_button}>

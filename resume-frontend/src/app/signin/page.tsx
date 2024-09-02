@@ -1,8 +1,14 @@
+'use client'
 import styles from "./page.module.css"
 import Image from "next/image"
 import Link from "next/link";
+import { useEffect } from "react";
+import Footer from "../footer/footer";
 
 export default function Signin() {
+  useEffect(()=>{
+    window.scrollTo(0,0);
+  },[])
 
   return (
 
@@ -40,7 +46,6 @@ export default function Signin() {
           <Link href='/signup' className={styles.action}>Sign Up</Link>
         </div>
       </div>
-
 
 
     </div>
