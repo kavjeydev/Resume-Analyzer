@@ -17,8 +17,8 @@ export default function Navbar(){
                         <Link href="https://www.github.com/kavjeydev" className={styles.small_button} target="_blank">
                             Github ⭐
                         </Link>
-                        <Link href="/howitworks" className={styles.small_button}>
-                            How It Works
+                        <Link href="/faq" className={styles.small_button}>
+                            FAQ
                         </Link>
                     </div>
 
