@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { useNavigate } from "react-router-dom";
+import { redirect } from 'next/navigation'
 
 import { getAuth,
     signInWithPopup,
@@ -10,6 +11,7 @@ import { getAuth,
     User }
     from "firebase/auth"
 import { getFunctions } from "firebase/functions";
+import { useState } from "react";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -24,6 +26,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const functions = getFunctions();
+
 // const analytics = getAnalytics(app);
 
 const auth = getAuth(app);
@@ -33,7 +36,6 @@ export function signInWithGoogle() {
 }
 
 export function signOut(){
-    navigate("/path/to/push");
     return auth.signOut();
 }
 

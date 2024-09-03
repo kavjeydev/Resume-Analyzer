@@ -53,6 +53,10 @@
     transition-duration: 0.3s;
   }
 
+  .disabled{
+    color: gray;
+  }
+
   .signup_button{
 
     display: flex;
@@ -121,7 +125,7 @@
 
 
     width: 100%;
-    z-index: 1000;
+    z-index: 10000;
 
 }
 

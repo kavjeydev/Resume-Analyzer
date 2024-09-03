@@ -7,7 +7,10 @@ import { useEffect, useState } from "react";
 import { signOut } from "../firebase/firebase";
 
 import { onAuthStateChangedHelper } from "../firebase/firebase";
-import { Navigate, Router } from 'react-router-dom';
+import { useRouter } from 'next/navigation'
+
+
+
 
 
 
@@ -15,14 +18,33 @@ import { Navigate, Router } from 'react-router-dom';
 
 export default function Navbar(){
     const [user, setUser] = useState<User | null>(null);
+    const router = useRouter();
 
-    useEffect(() => {
+    const [validEmail, setValidEmail] = useState(true);
+
+    function signOutRedirect(){
+        router.push('/');
+        signOut();
+
+    }
+
+    // useEffect(() => {
         const authHelper = onAuthStateChangedHelper((user) => {
+
             setUser(user);
+            if(user?.email && validEmail == false){
+                router.push('/');
+                setValidEmail(true);
+            }
+            else if(!user?.email && validEmail == true){
+                router.push('/');
+                setValidEmail(false);
+            }
+
         })
 
-        return () => authHelper();
-    })
+    //     return () => authHelper();
+    // })
 
     return(
         <div className={styles.nav_container}>
@@ -41,12 +63,12 @@ export default function Navbar(){
                         <Link href="/faq" className={styles.small_button}>
                             FAQ
                         </Link>
-                        {user?.email != null ? (
+                        {validEmail ? (
                             <Link href="/analyze" className={styles.small_button}>
                             Analyze
                             </Link>
                         ) : (
-                            <h1>{user?.email}</h1>
+                            <h1 className={styles.disabled}>Analyze</h1>
                         )}
 
                     </div>
@@ -54,7 +76,7 @@ export default function Navbar(){
                 </div>
 
                 <div className={styles.right_side}>
-                        {user?.email == null ? (
+                        {!validEmail ? (
                             <><Link href="/signin" className={styles.signin_button}>
                             Sign In
                             </Link>
@@ -66,7 +88,7 @@ export default function Navbar(){
 
                         ) : (
 
-                            <><button className={styles.signup_button} onClick={signOut}>
+                            <><button className={styles.signup_button} onClick={signOutRedirect}>
                                 Sign Out
                             </button></>
                         )}
