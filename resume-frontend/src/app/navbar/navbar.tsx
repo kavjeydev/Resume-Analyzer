@@ -1,8 +1,29 @@
+'use client'
 import Link from "next/link";
 import Image from "next/image"
 import styles from "./navbar.module.css"
+import { User } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { signOut } from "../firebase/firebase";
+
+import { onAuthStateChangedHelper } from "../firebase/firebase";
+import { Navigate, Router } from 'react-router-dom';
+
+
+
+
 
 export default function Navbar(){
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        const authHelper = onAuthStateChangedHelper((user) => {
+            setUser(user);
+        })
+
+        return () => authHelper();
+    })
+
     return(
         <div className={styles.nav_container}>
             <nav className={styles.resume_navbar}>
@@ -20,17 +41,42 @@ export default function Navbar(){
                         <Link href="/faq" className={styles.small_button}>
                             FAQ
                         </Link>
+                        {user?.email != null ? (
+                            <Link href="/analyze" className={styles.small_button}>
+                            Analyze
+                            </Link>
+                        ) : (
+                            <h1>{user?.email}</h1>
+                        )}
+
                     </div>
 
                 </div>
 
                 <div className={styles.right_side}>
-                    <Link href="/signin" className={styles.signin_button}>
+                        {user?.email == null ? (
+                            <><Link href="/signin" className={styles.signin_button}>
+                            Sign In
+                            </Link>
+                            <Link href="/signup" className={styles.signup_button}>
+                                Sign Up
+                            </Link>
+
+                            </>
+
+                        ) : (
+
+                            <><button className={styles.signup_button} onClick={signOut}>
+                                Sign Out
+                            </button></>
+                        )}
+
+                    {/* <Link href="/signin" className={styles.signin_button}>
                         Sign In
                     </Link>
                     <Link href="/signup" className={styles.signup_button}>
                         Sign Up
-                    </Link>
+                    </Link> */}
                 </div>
             </nav>
         </div>

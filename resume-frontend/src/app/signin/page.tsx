@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useEffect } from "react";
 import Footer from "../footer/footer";
 
+import { onAuthStateChangedHelper, signInWithGoogle } from "../firebase/firebase";
+
+
 export default function Signin() {
   useEffect(()=>{
     window.scrollTo(0,0);
@@ -15,10 +18,10 @@ export default function Signin() {
     <div className={styles.outer_div}>
       <h1 className={styles.header_one}>Welcome back!</h1>
       <div className={styles.closer_links}>
-        <Link href="/" className={styles.signin_google }>
+        <button className={styles.signin_google } onClick={signInWithGoogle}>
           <Image width={32} height={32} className={styles.logo} src="/google.png" alt="Google Logo"/>
           <h1 className={styles.header_three}>Sign in with Google</h1>
-        </Link>
+        </button>
         <h1 className={styles.sign_email}>
         ─────── &nbsp; Or sign in with your email &nbsp; ───────
         </h1>
