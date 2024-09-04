@@ -1,0 +1,7 @@
+"filename", "language", "TypeScript JSX", "TypeScript", "CSS", "comment", "blank", "total"
+"/Users/kavin_jey/Desktop/Resume-Analyzer/resume-frontend/src/app/firebase/firebase.ts", "TypeScript", 0, 54, 0, 2, 5, 61
+"/Users/kavin_jey/Desktop/Resume-Analyzer/resume-frontend/src/app/signin/page.tsx", "TypeScript JSX", 17, 0, 0, 0, 13, 30
+"/Users/kavin_jey/Desktop/Resume-Analyzer/resume-frontend/src/app/signin_button/signin_button.module.css", "CSS", 0, 0, 0, 0, -1, -1
+"/Users/kavin_jey/Desktop/Resume-Analyzer/resume-frontend/src/app/signin_button/signin_button.tsx", "TypeScript JSX", -25, 0, 0, 0, -7, -32
+"/Users/kavin_jey/Desktop/Resume-Analyzer/resume-frontend/src/app/signup/page.tsx", "TypeScript JSX", 15, 0, 0, 0, 3, 18
+"Total", "-", 7, 54, 0, 2, 13, 76

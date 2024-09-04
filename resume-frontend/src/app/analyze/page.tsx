@@ -6,7 +6,7 @@ import styles from "./page.module.css"
 import { useEffect } from "react";
 
 import {user_info} from "../navbar/navbar"
-import { getResumes, uploadResume } from "../firebase/functions";
+import { getResumes } from "../firebase/functions";
 
 export interface Resume {
     id: string,
@@ -17,7 +17,7 @@ export interface Resume {
     role: string
 }
 
-export default async function Analyze(){
+export default  function Analyze(){
 
     useEffect(()=>{
         window.scrollTo(0,0);
@@ -25,26 +25,11 @@ export default async function Analyze(){
 
     // const user_resumes = await getResumes(user_info);
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.item(0);
-        if (file) {
-          handleUpload(file);
-        }
-      };
-
-      const handleUpload = async (file: File) => {
-        try {
-          const response = await uploadResume(file);
-          alert(`File uploaded successfully. Server responded with: ${JSON.stringify(response)}`);
-        } catch (error) {
-          alert(`Failed to upload file: ${error}`);
-        }
-      };
 
 
     return(
         <div className={styles.total_container}>
-            <input id="upload" className={styles.uploadInput} type="file" accept="pdf/*"/>
+
             <div className={styles.left_col}>
                 <div className={styles.profile_container}>
                     <div className={styles.logo}>
@@ -66,8 +51,20 @@ export default async function Analyze(){
             </div>
 
             <div className={styles.right_col}>
+            <div className={styles.profile_container}>
+                  <h1 className={styles.user_name}>
+                      Your Resumes
+                  </h1>
+
+                </div>
+                <div className={styles.all_resume_cont}>
+                  <label className={styles.resume_upload}>
+                    <input id="upload" className={styles.upload_input} type="file" accept="pdf/*"/>
+                  </label>
+                </div>
 
             </div>
+
 
         </div>
     )

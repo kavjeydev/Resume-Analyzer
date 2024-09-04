@@ -52,22 +52,6 @@ export async function createUser(){
     const response: any = await createUserFunction();
 }
 
-export async function uploadResume(file: File){
-    const response: any = await uploadResumeFunction({
-        fileExtension: file.name.split('.').pop(),
-    });
-
-    // upload video via signed url
-    await fetch(response?.data?.url, {
-        method: 'PUT',
-        body: file,
-        headers:{
-            'Content-Type': file.type
-        }
-    });
-
-    return;
-}
 
 
 // export async function getThumbnails(){
