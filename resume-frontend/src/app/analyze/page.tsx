@@ -8,7 +8,17 @@ import { useEffect } from "react";
 import {user_info} from "../navbar/navbar"
 import { getResumes, uploadResume } from "../firebase/functions";
 
+export interface Resume {
+    id: string,
+    uid?: string,
+    filename: string,
+    thumbnail: string,
+    top_skills: string[],
+    role: string
+}
+
 export default async function Analyze(){
+
     useEffect(()=>{
         window.scrollTo(0,0);
       },[])

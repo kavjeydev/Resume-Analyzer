@@ -17,15 +17,7 @@ const videoCollectionId = "videos";
 const resumeCollection = "resumes";
 const rawGCSBucketName = "asm-cht-raw-videos";
 
-export interface Video {
-  id?: string,
-  uid?: string,
-  filename?: string,
-  status?: "processing" | "processed",
-  title?: string,
-  description?: string,
-  thumbnail?: string
-}
+
 
 export interface Thumbnail {
   id?: string,

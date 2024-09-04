@@ -16,7 +16,8 @@ export interface Video {
   status?: 'processing' | 'processed',
   title: string,
   description?: string,
-  thumbnail: string
+  thumbnail: string,
+
 }
 
 export interface Resume {
@@ -24,7 +25,8 @@ export interface Resume {
     uid?: string,
     filename: string,
     thumbnail: string,
-    avg_score: string
+    top_skills: string[],
+    role: string
 }
 
 export interface Thumbnail {
