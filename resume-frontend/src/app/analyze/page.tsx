@@ -5,71 +5,60 @@ import Image from "next/image"
 import styles from "./page.module.css"
 import { useEffect } from "react";
 
-export default function Footer(){
+import {user_info} from "../navbar/navbar"
+import { getResumes, uploadResume } from "../firebase/functions";
+
+export default async function Analyze(){
     useEffect(()=>{
         window.scrollTo(0,0);
       },[])
+
+    // const user_resumes = await getResumes(user_info);
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.item(0);
+        if (file) {
+          handleUpload(file);
+        }
+      };
+
+      const handleUpload = async (file: File) => {
+        try {
+          const response = await uploadResume(file);
+          alert(`File uploaded successfully. Server responded with: ${JSON.stringify(response)}`);
+        } catch (error) {
+          alert(`Failed to upload file: ${error}`);
+        }
+      };
+
+
     return(
         <div className={styles.total_container}>
-            <div className={styles.footer_container}>
-                <div className={styles.logo}>
-                    <Image width={75} height={75} className={styles.abstract} src="/logo.png" alt="orange abs"/>
-                    <h1 className={styles.logo_footer}>
-                        Get more interviews by using AI the right way. Keeping job seekers out of the dark.
-                    </h1>
-                </div>
-                <div className={styles.right_side}>
-                    <div className={styles.support}>
-                        <h1 className={styles.heading}>
-                            Support
-                        </h1>
-                        <div className={styles.small_links}>
-                            <h1 className={styles.para}>
-                                <Link href="/faq">FAQ</Link>
-                            </h1>
-                            <h1 className={styles.para}>
-                                <Link href="mailto: kavin11205@gmail.com">Email</Link>
-                            </h1>
-
-                        </div>
-
+            <input id="upload" className={styles.uploadInput} type="file" accept="pdf/*"/>
+            <div className={styles.left_col}>
+                <div className={styles.profile_container}>
+                    <div className={styles.logo}>
+                        {
+                            user_info?.photoURL ? (
+                                <Image width={35} height={35} className={styles.user_photo} src={user_info?.photoURL} alt="orange abs"/>
+                            ) :
+                            (
+                                <Image width={35} height={35} className={styles.user_photo} src="/logo.png" alt="orange abs"/>
+                            )
+                        }
                     </div>
+                        <h1 className={styles.user_name}>
+                            {user_info?.email?.split("@")[0]}
+                        </h1>
 
-                    <div className={styles.use}>
-                        <h1 className={styles.heading}>
-                            Get Started
-                        </h1>
-                        <h1 className={styles.para}>
-                            <Link href="/signin" ><span className={styles.emphasize}>Sign in</span> and get started for free now!</Link>
-                        </h1>
-                    </div>
                 </div>
-
-
 
             </div>
 
-
-            <div className={styles.line_container}>
-                    <h1 className={styles.line}>
-                        ─────────────────────────────────────────────────────────────────────────────────────────────────────────
-                    </h1>
-
-                    <div className={styles.under_line_content}>
-                        <h1 className={styles.line_words}>
-                            2024 Quixotic
-                        </h1>
-                        <div className={styles.social_media}>
-                            <Link href="https://www.github.com/kavjeydev" target="_blank">
-                                <Image width={30} height={30} className={styles.footer_logo} src="/github2.svg" alt="Github Logo"/>
-                            </Link>
-                            <Link href="https://www.linkedin.com/in/kavinjey" target="_blank">
-                                <Image width={30} height={30} className={styles.footer_logo} src="/linkedin.svg" alt="Github Logo"/>
-                            </Link>
-                        </div>
-                    </div>
+            <div className={styles.right_col}>
 
             </div>
+
         </div>
     )
 }

@@ -12,15 +12,17 @@ import { useRouter } from 'next/navigation'
 
 
 
+var user_info: User | null = null;
 
-
-
+export { user_info }
 
 export default function Navbar(){
+
     const [user, setUser] = useState<User | null>(null);
     const router = useRouter();
 
-    const [validEmail, setValidEmail] = useState(true);
+
+    const [validEmail, setValidEmail] = useState(false);
 
     function signOutRedirect(){
         router.push('/');
@@ -29,19 +31,22 @@ export default function Navbar(){
     }
 
     // useEffect(() => {
-        const authHelper = onAuthStateChangedHelper((user) => {
+    const authHelper = onAuthStateChangedHelper((user) => {
 
-            setUser(user);
-            if(user?.email && validEmail == false){
-                router.push('/');
-                setValidEmail(true);
-            }
-            else if(!user?.email && validEmail == true){
-                router.push('/');
-                setValidEmail(false);
-            }
+        setUser(user);
+        user_info = user;
+        if(user?.email && validEmail == false){
+            router.push('/');
+            setValidEmail(true);
 
-        })
+        }
+        else if(!user?.email && validEmail == true){
+            router.push('/');
+
+            setValidEmail(false);
+        }
+
+    })
 
     //     return () => authHelper();
     // })
@@ -58,14 +63,14 @@ export default function Navbar(){
 
                     <div className={styles.small_links_cont}>
                         <Link href="https://github.com/kavjeydev/Resume-Analyzer" className={styles.small_button} target="_blank">
-                            Github ⭐
+                            Github
                         </Link>
                         <Link href="/faq" className={styles.small_button}>
                             FAQ
                         </Link>
                         {validEmail ? (
                             <Link href="/analyze" className={styles.small_button}>
-                            Analyze
+                            Analyze ⭐
                             </Link>
                         ) : (
                             <h1 className={styles.disabled}>Analyze</h1>

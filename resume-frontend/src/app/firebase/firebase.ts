@@ -16,12 +16,14 @@ import { useState } from "react";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDIXXtv2t7HIGWqDEoV3hHC-Tourk3BzIM",
-  authDomain: "anti-social-media-72712.firebaseapp.com",
-  projectId: "anti-social-media-72712",
-  appId: "1:514615373087:web:a9653ca92b9cf7728f142a",
-  measurementId: "G-CWWX013ZNX"
-};
+    apiKey: "AIzaSyBYxcy6FILx2V0HZ5rTHbep_v1HW2BH8Sk",
+    authDomain: "quixotic-resume-analyzer.firebaseapp.com",
+    projectId: "quixotic-resume-analyzer",
+    storageBucket: "quixotic-resume-analyzer.appspot.com",
+    messagingSenderId: "228127350714",
+    appId: "1:228127350714:web:02935c11c3d0d212520783",
+    measurementId: "G-NGHY2SW4TW"
+  };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
