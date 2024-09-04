@@ -2,13 +2,29 @@
 import styles from "./page.module.css"
 import Image from "next/image"
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Footer from "../footer/footer";
+import { useRouter } from 'next/router';
 
-import { onAuthStateChangedHelper, signInWithGoogle } from "../firebase/firebase";
+import { onAuthStateChangedHelper, signInWithGoogle, signInWithGoogleNonPersistent, signInWithGooglePersistent } from "../firebase/firebase";
 
 
 export default function Signin() {
+  var staySignedIn = false;
+
+  function reverseSignedIn(){
+
+    staySignedIn = !staySignedIn;
+    console.log(staySignedIn);
+    return staySignedIn;
+  }
+
+  function signInWithGoogleProper(){
+    signInWithGoogle(staySignedIn)
+  }
+
+
+
   useEffect(()=>{
     window.scrollTo(0,0);
   },[])
@@ -20,10 +36,12 @@ export default function Signin() {
     <div className={styles.outer_div}>
       <h1 className={styles.header_one}>Welcome back!</h1>
       <div className={styles.closer_links}>
-        <button className={styles.signin_google } onClick={signInWithGoogle}>
-          <Image width={32} height={32} className={styles.logo} src="/google.png" alt="Google Logo"/>
-          <h1 className={styles.header_three}>Sign in with Google</h1>
-        </button>
+            <button className={styles.signin_google } onClick={signInWithGoogleProper}>
+              <Image width={32} height={32} className={styles.logo} src="/google.png" alt="Google Logo"/>
+              <h1 className={styles.header_three}>Sign in with Google</h1>
+            </button>
+
+
         <h1 className={styles.sign_email}>
         ─────── &nbsp; Or sign in with your email &nbsp; ───────
         </h1>
@@ -39,7 +57,7 @@ export default function Signin() {
 
         <div className={styles.final_container}>
           <div className={styles.checkbox}>
-            <input type="checkbox" name="stay_signed_in" className={styles.checkbox_input}/>
+            <input type="checkbox" name="stay_signed_in" className={styles.checkbox_input} onClick={reverseSignedIn}/>
             <label>Keep me signed in</label>
           </div>
           <Link href="/passwordreset" className={styles.question}>Forgot password?</Link>

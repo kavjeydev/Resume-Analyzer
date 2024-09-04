@@ -8,7 +8,10 @@ import { getAuth,
     signInWithPopup,
     GoogleAuthProvider,
     onAuthStateChanged,
-    User }
+    User,
+    setPersistence,
+    browserSessionPersistence,
+    browserLocalPersistence}
     from "firebase/auth"
 import { getFunctions } from "firebase/functions";
 import { useState } from "react";
@@ -33,8 +36,25 @@ export const functions = getFunctions();
 
 const auth = getAuth(app);
 
-export function signInWithGoogle() {
-    return signInWithPopup(auth, new GoogleAuthProvider());
+export function signInWithGoogle(persistent: boolean){
+    if(persistent){
+        signInWithGooglePersistent();
+    }
+    else{
+        signInWithGoogleNonPersistent();
+    }
+  }
+
+export function signInWithGooglePersistent() {
+    setPersistence(auth, browserLocalPersistence).then(() => {
+        return signInWithPopup(auth, new GoogleAuthProvider());
+    })
+}
+
+export function signInWithGoogleNonPersistent() {
+    setPersistence(auth, browserSessionPersistence).then(() => {
+        return signInWithPopup(auth, new GoogleAuthProvider());
+    })
 }
 
 export function signOut(){

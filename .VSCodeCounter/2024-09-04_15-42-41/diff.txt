@@ -1,0 +1,42 @@
+Date : 2024-09-04 15:42:41
+Directory : /Users/kavin_jey/Desktop/Resume-Analyzer
+Total : 6 files,  137 codes, 5 comments, 54 blanks, all 196 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| Python         |          2 |        107 |          5 |         50 |        162 |
+| JSON           |          1 |         30 |          0 |          0 |         30 |
+| TypeScript JSX |          1 |          8 |          0 |          2 |         10 |
+| TypeScript     |          2 |         -8 |          0 |          2 |         -6 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                   | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                      |          6 |        137 |          5 |         54 |        196 |
+| resume-api                                                                             |          1 |         -9 |          0 |          1 |         -8 |
+| resume-api/functions                                                                   |          1 |         -9 |          0 |          1 |         -8 |
+| resume-api/functions/src                                                               |          1 |         -9 |          0 |          1 |         -8 |
+| resume-backend                                                                         |          3 |        137 |          5 |         50 |        192 |
+| resume-frontend                                                                        |          2 |          9 |          0 |          3 |         12 |
+| resume-frontend/src                                                                    |          2 |          9 |          0 |          3 |         12 |
+| resume-frontend/src/app                                                                |          2 |          9 |          0 |          3 |         12 |
+| resume-frontend/src/app/analyze                                                        |          1 |          8 |          0 |          2 |         10 |
+| resume-frontend/src/app/firebase                                                       |          1 |          1 |          0 |          1 |          2 |
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                               | language       | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| /Users/kavin_jey/Desktop/Resume-Analyzer/resume-api/functions/src/index.ts             | TypeScript     |         -9 |          0 |          1 |         -8 |
+| /Users/kavin_jey/Desktop/Resume-Analyzer/resume-backend/main.py                        | Python         |        106 |          5 |         50 |        161 |
+| /Users/kavin_jey/Desktop/Resume-Analyzer/resume-backend/models.py                      | Python         |          1 |          0 |          0 |          1 |
+| /Users/kavin_jey/Desktop/Resume-Analyzer/resume-backend/test.json                      | JSON           |         30 |          0 |          0 |         30 |
+| /Users/kavin_jey/Desktop/Resume-Analyzer/resume-frontend/src/app/analyze/page.tsx      | TypeScript JSX |          8 |          0 |          2 |         10 |
+| /Users/kavin_jey/Desktop/Resume-Analyzer/resume-frontend/src/app/firebase/functions.ts | TypeScript     |          1 |          0 |          1 |          2 |
+| Total                                                                                  |                |        137 |          5 |         54 |        196 |
++----------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
