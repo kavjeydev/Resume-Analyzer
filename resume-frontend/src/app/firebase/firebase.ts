@@ -11,7 +11,10 @@ import { getAuth,
     User,
     setPersistence,
     browserSessionPersistence,
-    browserLocalPersistence}
+    browserLocalPersistence,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    AuthErrorCodes}
     from "firebase/auth"
 import { getFunctions } from "firebase/functions";
 import { useState } from "react";
@@ -63,4 +66,42 @@ export function signOut(){
 
 export function onAuthStateChangedHelper(callback: (user: User | null) => void){
     return onAuthStateChanged(auth, callback);
+}
+
+export function signInwithEmailPassword(email: string, password: string){
+    return signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        console.log(userCredential.user);
+    })
+    .catch((err) => {
+        if (err.code === AuthErrorCodes.INVALID_LOGIN_CREDENTIALS) {
+            alert("Account with these credentials does not exist.");
+          } else if (err.code === AuthErrorCodes.INVALID_EMAIL){
+            alert("Invalid Email.")
+          }
+          else {
+            console.log(err.code);
+            alert(err.code);
+          }
+    });
+}
+
+
+export function signUpwithEmailPassword(email: string, password: string){
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        console.log(userCredential.user);
+        // ...
+      })
+      .catch((err) => {
+        if (err.code === AuthErrorCodes.WEAK_PASSWORD) {
+        alert("The password is too weak.");
+      } else if (err.code === AuthErrorCodes.EMAIL_EXISTS) {
+        alert("The email address is already in use.");
+      } else {
+        console.log(err.code);
+        alert(err.code);
+      }
+      });
 }

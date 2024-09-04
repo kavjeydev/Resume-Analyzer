@@ -3,13 +3,19 @@ import styles from "./page.module.css"
 import Image from "next/image"
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Footer from "../footer/footer";
-import { useRouter } from 'next/router';
 
-import { onAuthStateChangedHelper, signInWithGoogle, signInWithGoogleNonPersistent, signInWithGooglePersistent } from "../firebase/firebase";
+
+import { onAuthStateChangedHelper,
+  signInwithEmailPassword,
+  signInWithGoogle, signInWithGoogleNonPersistent,
+  signInWithGooglePersistent } from "../firebase/firebase";
 
 
 export default function Signin() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+
   var staySignedIn = false;
 
   function reverseSignedIn(){
@@ -21,6 +27,12 @@ export default function Signin() {
 
   function signInWithGoogleProper(){
     signInWithGoogle(staySignedIn)
+  }
+
+
+  function quixoticUserSignIn(){
+    console.log(email, password)
+    signInwithEmailPassword(email, password);
   }
 
 
@@ -48,11 +60,11 @@ export default function Signin() {
 
         <form className={styles.outer_form}>
           <label>Email</label>
-          <input type="text" name="email" placeholder="example@email.com" className={styles.typing_field}/>
+          <input type="email" name="email" placeholder="example@email.com" className={styles.typing_field} required onChange={e => { setEmail(e.currentTarget.value); }}/>
         </form>
         <form className={styles.outer_form}>
           <label>Password</label>
-          <input type="password" name="password" placeholder="*********" className={styles.typing_field}/>
+          <input type="password" name="password" placeholder="*********" className={styles.typing_field} required onChange={e => { setPassword(e.currentTarget.value); }}/>
         </form>
 
         <div className={styles.final_container}>
@@ -62,7 +74,7 @@ export default function Signin() {
           </div>
           <Link href="/passwordreset" className={styles.question}>Forgot password?</Link>
         </div>
-        <button className={styles.submit} type="submit">Sign In</button>
+        <button className={styles.submit} type="submit" onClick={quixoticUserSignIn}>Sign In</button>
 
         <div className={styles.no_account}>
           <h1 className={styles.question}>Don't have an account?</h1>
