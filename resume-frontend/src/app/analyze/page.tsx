@@ -58,9 +58,13 @@ export default  function Analyze(){
 
                 </div>
                 <div className={styles.all_resume_cont}>
-                  <label className={styles.resume_upload}>
-                    <input id="upload" className={styles.upload_input} type="file" accept="pdf/*"/>
-                  </label>
+                  <div className={styles.upload_container}>
+
+                    <label className={styles.resume_upload}>
+                      <Image width={10} height={10} className={styles.user_photo} src='/plus.svg' alt="orange abs"/>
+                      <input id="upload" className={styles.upload_input} type="file" accept="pdf/*"/>
+                    </label>
+                  </div>
                 </div>
 
             </div>
