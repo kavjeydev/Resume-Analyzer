@@ -2,6 +2,8 @@ from openai import OpenAI
 from pypdf import PdfReader
 from google.cloud import storage
 
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -13,6 +15,34 @@ from dotenv import load_dotenv
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+app = Flask(__name__)
+CORS(app)
+
+@app.route("/api/home", methods=["GET"])
+def return_home():
+    return jsonify({
+        'message': 'hello world'
+    })
+
+@app.route('/process', methods=['POST', 'GET'])
+def process_file():
+    file = request.files
+    filename = ''
+
+    file_data = file
+    if(len(file.getlist('file')) > 0):
+        filename = file.getlist('file')[0].filename
+        print("FILE HERE" , file.getlist('file')[0].filename)
+
+
+
+    return jsonify({
+        'output': 'hi'
+    })
+
+if(__name__ == '__main__'):
+    app.run(debug=True, port=8080)
+
 
 
 
@@ -157,5 +187,7 @@ def get_skills(extracted_text, client):
     return skills.split(', ')
 
 
-run_all('./resumes/example.pdf', 'https://explore.jobs.netflix.net/careers?query=Software%20Engineer%204&utm_source=Netflix+Careersite')
+# run_all('./resumes/example.pdf', 'https://explore.jobs.netflix.net/careers?query=Software%20Engineer%204&utm_source=Netflix+Careersite')
+
+
 
