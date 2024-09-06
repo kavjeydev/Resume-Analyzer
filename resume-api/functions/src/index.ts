@@ -4,17 +4,24 @@ import * as functions from "firebase-functions";
 import {Firestore} from "firebase-admin/firestore";
 import {Storage} from "@google-cloud/storage";
 import {onCall} from "firebase-functions/v2/https";
-
-
+// import { User } from "firebase/auth";
+import { User } from "firebase/auth";
+export interface Resume {
+  id: string,
+  uid?: string,
+  filename: string,
+  thumbnail: string,
+  top_skills: string[],
+  role: string
+}
 
 initializeApp();
 
 const firestore = new Firestore();
 const storage = new Storage();
 
-const videoCollectionId = "videos";
+// const videoCollectionId = "videos";
 
-const resumeCollection = "resumes";
 const rawGCSBucketName = "asm-cht-raw-videos";
 
 
@@ -66,23 +73,20 @@ export const uploadResume = onCall({maxInstances: 1}, async (request) => {
   });
 
 
+  export async function getResumes(user_info:User | null){
 
-export const getVideos = onCall({maxInstances: 1}, async () => {
-  const querySnapshot =
-    await firestore.collection(videoCollectionId).limit(10).get();
-  return querySnapshot.docs.map((doc) => doc.data());
-});
 
-export const getResumes = functions.https.onCall( async (data, context) => {
-    const userInfo = {
-        id: data.uid,
-        email: data.email,
-        photoUrl: data.photoURL,
-    };
-  const querySnapshot =
-    await firestore.collection(resumeCollection).where("user_id", "==", userInfo.id).limit(10).get();
-  return querySnapshot.docs.map((doc) => doc.data());
-})
+
+  }
+
+
+
+// export const getResumes = (async (data: User) => {
+//   const querySnapshot =
+//     await firestore.collection(resumeCollection).where("uid", "==", data.uid).limit(1).get();
+//   return querySnapshot.docs.map((doc) => doc.data());
+// })
+
 
 
 

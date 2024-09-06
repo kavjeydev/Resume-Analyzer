@@ -108,3 +108,10 @@
     height: 200px;
     width: 150px;
 }
+
+.resume{
+    height: 200px;
+    width: 150px;
+    background-color: red;
+    color: white;
+}

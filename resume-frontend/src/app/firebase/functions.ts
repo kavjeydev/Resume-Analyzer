@@ -26,7 +26,8 @@ export interface Resume {
     filename: string,
     thumbnail: string,
     top_skills: string[],
-    role: string
+    role: string,
+    job_level: string
 }
 
 export interface Thumbnail {
@@ -41,11 +42,11 @@ export async function getVideos() {
     return response.data as Video[];
   }
 
-export async function getResumes(user: User | null){
-    const response: any = await getResumesFunction(user);
-    console.log(response);
+export async function getResumes(user_info: User | null){
+    const response: any = await getResumesFunction(user_info);
+    console.log("RESPONSE", response);
 
-    return response.data as Resume[]
+    return response.data as Resume[];
 }
 
 export async function createUser(){

@@ -4,11 +4,15 @@ import Link from "next/link";
 import Image from "next/image"
 import styles from "./page.module.css"
 import { useEffect, useState } from "react";
-
 import {user_info} from "../navbar/navbar"
 import { getResumes } from "../firebase/functions";
 import { sign } from "crypto";
 import { sendResponse } from "next/dist/server/image-optimizer";
+import { collection, Firestore, getDocs, getFirestore, query, where } from "firebase/firestore";
+import { getApp, initializeApp } from "firebase/app";
+import Router from "next/router";
+import { firebaseConfig } from "./env";
+
 
 export interface Resume {
     id: string,
@@ -27,15 +31,60 @@ export function uuidv4() {
 
   console.log(uuidv4());
 
-export default  function Analyze(){
-    const [file, setFile] = useState(null);
+export default function Analyze(){
+    var user_resumes:any = [];
+
+
+    const app_init = (() => {
+        try{
+            return getApp();
+        }
+        catch(any){
+
+              return initializeApp(firebaseConfig);
+        }
+    })
+
 
     useEffect(()=>{
         window.scrollTo(0,0);
       },[])
 
-    // const user_resumes = await getResumes(user_info);
+    useEffect(() => {
+        const result = async () => {
+            try{
+            const app = app_init();
+            const db = getFirestore(app);
+            const resumeRef = collection(db, 'resumes');
 
+
+        // Create a query against the collection.
+            const q = query(resumeRef);
+
+            // const resumes_uploaded_by_user = getResumes();
+
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc: any) => {
+            // doc.data() is never undefined for query doc snapshots
+                if(doc.data().uid == user_info?.uid){
+                    console.log(doc.id, " => ", doc.data().uid);
+                    user_resumes.push(doc.data());
+
+                }
+                console.log(user_resumes)
+
+            });
+
+            Router.reload()
+            }
+            catch{
+                console.log('error getting resumes')
+            }
+        }
+
+        result();
+    })
+    console.log("RESULT", )
     async function send_resume(e: any){
         const inputted_file = e.target.files[0];
 
@@ -44,7 +93,7 @@ export default  function Analyze(){
 
         var blob = inputted_file.slice(0, inputted_file.size);
         var unique_identity = uuidv4();
-        var newFile = new File([blob], `${user_info?.uid}-${unique_identity}.pdf`);
+        var newFile = new File([blob], `${user_info?.uid}-${unique_identity}#${inputted_file['name']}`);
 
         console.log('New FIle', newFile)
 
@@ -116,10 +165,11 @@ export default  function Analyze(){
                 </div>
                 <div className={styles.all_resume_cont}>
                   <div className={styles.upload_container}>
-
-                    <label className={styles.resume_upload}>
+                        {user_resumes.length}                    <label className={styles.resume_upload}>
                       <Image width={10} height={10} className={styles.user_photo} src='/plus.svg' alt="orange abs"/>
                       <input id="upload" className={styles.upload_input} type="file" accept="pdf/*" onChange={send_resume}/>
+
+
                     </label>
                   </div>
                 </div>
