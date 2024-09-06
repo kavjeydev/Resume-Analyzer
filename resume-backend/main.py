@@ -1,3 +1,4 @@
+from time import sleep
 from openai import OpenAI
 from pypdf import PdfReader
 from google.cloud import storage
@@ -6,9 +7,9 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials
-from firebase_admin import db
+from firebase_admin import db, firestore
 import json
-
+from models import Resume
 import os
 from dotenv import load_dotenv
 
@@ -18,32 +19,18 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/api/home", methods=["GET"])
-def return_home():
-    return jsonify({
-        'message': 'hello world'
-    })
+app.config['UPLOAD_FOLDER'] = './resumes'
 
-@app.route('/process', methods=['POST', 'GET'])
-def process_file():
-    file = request.files
-    filename = ''
 
-    file_data = file
-    if(len(file.getlist('file')) > 0):
-        filename = file.getlist('file')[0].filename
-        print("FILE HERE" , file.getlist('file')[0].filename)
+cred = credentials.Certificate('private_key.json')
+firebase_admin.initialize_app(cred)
+
+db = firestore.client()
 
 
 
-    return jsonify({
-        'output': 'hi'
-    })
 
-if(__name__ == '__main__'):
-    app.run(debug=True, port=8080)
-
-
+# print(all_matching_data)
 
 
 def upload_to_gcs_public(bucket_name, source_file_path, destination_blob_name, credentials_file):
@@ -60,9 +47,11 @@ def upload_to_gcs_public(bucket_name, source_file_path, destination_blob_name, c
 
     print(f"File {source_file_path} uploaded to gs://{bucket_name}/{destination_blob_name}")
 
-def run_all(filepath, job_listing):
+def run_all(filepath, job_listing, filename):
     client = OpenAI(api_key=OPENAI_API_KEY)
     extracted_text = pdf_to_array(filepath)
+
+    user_id = filename.split('-')[0]
 
 
     for i in range(3):
@@ -89,6 +78,18 @@ def run_all(filepath, job_listing):
     skills = get_skills(extracted_text, client)
 
     print(skills)
+
+    doc_ref = db.collection(u'resumes')
+    doc_ref.document(filename).set(Resume(filename.split('.')[0], user_id, filename, '', skills, job_title, job_level).to_dict())
+
+
+    query = db.collection(u'resumes').where(u'uid', u'==', f'{user_id}').stream()
+
+    all_matching_data = []
+
+    for doc in query:
+        all_matching_data.append(doc.to_dict())
+    # print(f'{doc.id} => {doc.to_dict()}')
 
 def pdf_to_array(filepath):
     reader = PdfReader(filepath)
@@ -187,7 +188,29 @@ def get_skills(extracted_text, client):
     return skills.split(', ')
 
 
-# run_all('./resumes/example.pdf', 'https://explore.jobs.netflix.net/careers?query=Software%20Engineer%204&utm_source=Netflix+Careersite')
+@app.route("/api/home", methods=["GET"])
+def return_home():
+    return jsonify({
+        'message': 'hello world'
+    })
+
+@app.route('/process', methods=['POST', 'GET'])
+def process_file():
+    file = request.files['file']
+    print("file", file)
+    if(file):
+        filename = file.filename
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        a = 'file uploaded'
+
+    run_all(f'./resumes/{filename}', 'https://explore.jobs.netflix.net/careers?query=Software%20Engineer%204&utm_source=Netflix+Careersite', filename)
+    return jsonify({
+        'output': 'hi'
+    })
+
+if(__name__ == '__main__'):
+    app.run(debug=True, port=8080)
+
 
 
 

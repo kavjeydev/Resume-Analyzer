@@ -38,7 +38,7 @@ export default  function Analyze(){
 
     async function send_resume(e: any){
         const inputted_file = e.target.files[0];
-        setFile(inputted_file);
+
 
         console.log(inputted_file)
 
@@ -48,14 +48,14 @@ export default  function Analyze(){
 
         console.log('New FIle', newFile)
 
-        if(inputted_file === null){
+        if(newFile === null){
             alert('no file')
         }
         else{
             const form_data = new FormData();
-            form_data.append('file', inputted_file);
+            form_data.append('file', newFile);
 
-            console.log('File selected', inputted_file['name']);
+            console.log('File selected', newFile['name']);
 
             // inputted_file['name'] = user_info?.uid + '.pdf';
 
