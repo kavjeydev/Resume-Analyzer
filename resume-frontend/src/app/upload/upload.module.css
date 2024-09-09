@@ -1,30 +1,26 @@
 .all_resumes{
     display: flex;
 
-    gap: 20px;
+    flex-wrap: wrap;
 
+    padding-bottom: 20px;
 }
 
 .one_resume{
     display: flex;
     flex-direction: column;
     position: relative;
-    height: 300px;
-    width: 230px;
+    height: 275px;
+    width: 215px;
     border-radius: 10px;
+    margin-right: 20px;
+    margin-top: 20px;
 
     padding: 7px;
-    align-items: center;
-}
-.thumbnail{
-    filter: grayscale(100%);
+    background-color: rgb(0, 0, 0);
 
-    z-index: -1x;
-    border-radius: 5px;
 }
-.thumbnail:hover{
-    opacity: 1;
-}
+
 
 .title{
     font-size: 14px;
@@ -57,6 +53,8 @@
     outline: 1px solid rgb(0, 0, 0);
 
 
+
+
 }
 .skill{
     color: rgb(255, 255, 255);
@@ -72,12 +70,14 @@
     position: relative;
     flex-wrap: wrap;
 
+
     width: 100%;
 
 
-    padding-left: 5px;
-    padding-right: 5px;
-
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-bottom: 3px;
+    z-index: 2;
 
     gap: 10px;
 }
@@ -95,6 +95,52 @@
 
     height: 100%;
     width:100%;
-    background-color: red;
 
+}
+
+.thumbnail{
+    filter: grayscale(100%);
+
+
+    z-index: 1;
+    border-radius: 5px;
+    transition-duration: 0.2s;
+}
+
+.with_title:hover{
+    filter: grayscale(0%);
+    opacity: 0.7;
+
+    transition-duration: 0.2s;
+}
+
+.gradient{
+    display: block;
+    position: absolute;
+    height: 275px;
+
+    left: 0px;
+    top: 0px;
+    width: 100%;
+
+    background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.223), rgba(0, 0, 0, 0.677));
+
+    z-index: 2;
+}
+
+.job_title{
+    background-color: rgba(255, 200, 0, 0.361);
+    backdrop-filter: blur(5px);
+    position: relative;
+    padding: 2px;
+    font-size: 14px;
+    top: 0px;
+    color: black;
+    z-index: 5;
+
+    outline: 1px solid black;
+
+    border-radius: 5px;
+
+    text-align: center;
 }

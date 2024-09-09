@@ -19,23 +19,32 @@ export default async function Upload(){
                             res.uid == user_info_analyze?.uid ? (
                                 <div className={styles.with_title}>
                                     <div className={styles.one_resume} key={res.id}>
+                                        <div className={styles.job_title}>
+                                            {res.job_level} {res.role}
+                                        </div>
                                         <div className={styles.image_div}>
                                             <Image src={`https://storage.googleapis.com/quixotic-processed-thumbnails/${res.thumbnail.split('#')[0]}%23${res.thumbnail.split('#')[1]}`} alt='thumbnail' objectFit="cover" layout="fill"
                                                 className={styles.thumbnail} />
+                                        </div>
+                                        <div className={styles.gradient}>
+
                                         </div>
 
                                         <div className={styles.all_skills}>
                                             {
                                                 res.top_skills.map((skill, index) => (
 
-                                                    <div className={styles.skill_container} style={{backgroundColor: colors[index]}}>
-                                                        <h1 className={styles.skill} style={{color: text_colors[index]}}>{skill}</h1>
+                                                   <div className={styles.skill_container} style={{ backgroundColor: colors[index] }}>
+                                                        <h1 className={styles.skill} style={{ color: text_colors[index] }}>{skill}</h1>
 
                                                     </div>
 
+
                                                 ))
                                             }
+
                                         </div>
+
 
 
                                     </div>

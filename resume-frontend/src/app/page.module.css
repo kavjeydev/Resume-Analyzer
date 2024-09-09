@@ -93,20 +93,25 @@
 }
 
 .left_col{
+
     display: flex;
     flex-direction: column;
     gap: 25px;
 
     padding-top: 100px;
-    padding-left: 120px;
+    justify-content: center;
+    align-items: center;
+    /* padding-left: 210px; */
     width: 50%;
     font-size: 16px;
 }
 
 .right_col{
-
+    align-items: left;
     padding-top: 100px;
-    padding-left: 190px;
+    /* justify-content: center;
+    align-items: center; */
+    padding-left: 12.5vw;
     width: 50%;
     font-size: 16px;
 }
@@ -120,7 +125,6 @@
 
 .left_para{
     color: gray;
-
     width:500px;
 
 }

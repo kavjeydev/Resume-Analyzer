@@ -74,7 +74,7 @@ def run_all(filepath, job_listing, filename):
     valid = verify_resume(extracted_text, client)
     print(valid)
     if(not valid):
-        return
+        return False
 
     job_title = get_profession(extracted_text, client)
     job_level = get_level(extracted_text, client)
