@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "./page.module.css"
 import Link from "next/link";
 import Footer from "./footer/footer";
+import Upload from "./upload/upload";
 
 export default function Home() {
   return (
@@ -67,8 +68,9 @@ export default function Home() {
 
         </div>
 
-
+        {/* <Upload /> */}
         <Footer />
+
       </div>
     </div>
   );

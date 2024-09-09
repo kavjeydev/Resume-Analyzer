@@ -12,10 +12,15 @@ import json
 from models import Resume
 import os
 from dotenv import load_dotenv
+from pdf2image import convert_from_path
 
 load_dotenv()
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+BUCKET_NAME = 'quixotic-processed-resumes'
+
+THUMBNAIL_BUCKET = 'quixotic-processed-thumbnails'
+
 app = Flask(__name__)
 CORS(app)
 
@@ -49,7 +54,11 @@ def upload_to_gcs_public(bucket_name, source_file_path, destination_blob_name, c
 
 def run_all(filepath, job_listing, filename):
     client = OpenAI(api_key=OPENAI_API_KEY)
-    extracted_text = pdf_to_array(filepath)
+    extracted_text, thumbnail_path = pdf_to_array(filepath)
+
+
+    file = f'./resumes/{filename}'
+
 
     user_id = filename.split('-')[0]
 
@@ -78,9 +87,17 @@ def run_all(filepath, job_listing, filename):
     skills = get_skills(extracted_text, client)
 
     print(skills)
+    SOURCE_FILE_PATH = file
 
+    THUMBNAIL_FILE_PATH = thumbnail_path
+
+    CREDENTIALS_FILE = "./credentials.json"
+    DESTINATION_BLOB_NAME = filename
+    THUMBNAIL_DEST = filename.split('.')[0] + '.jpg'
+    upload_to_gcs_public(BUCKET_NAME, SOURCE_FILE_PATH, DESTINATION_BLOB_NAME, CREDENTIALS_FILE) # upload resume
+    upload_to_gcs_public(THUMBNAIL_BUCKET, THUMBNAIL_FILE_PATH, THUMBNAIL_DEST, CREDENTIALS_FILE) # upload thumbnail
     doc_ref = db.collection(u'resumes')
-    doc_ref.document(filename).set(Resume(filename.split('.')[0], user_id, filename, '', skills, job_title, job_level).to_dict())
+    doc_ref.document(filename).set(Resume(filename.split('.')[0], user_id, filename, THUMBNAIL_DEST, skills, job_title, job_level).to_dict())
 
 
     query = db.collection(u'resumes').where(u'uid', u'==', f'{user_id}').stream()
@@ -92,6 +109,11 @@ def run_all(filepath, job_listing, filename):
     # print(f'{doc.id} => {doc.to_dict()}')
 
 def pdf_to_array(filepath):
+    pages = convert_from_path(filepath)
+
+    for count, page in enumerate(pages):
+        page.save(f'./thumbnails/out{count}.jpg', 'JPEG')
+    thumbnail_path = f'./thumbnails/out0.jpg'
     reader = PdfReader(filepath)
 
     # creating a page object
@@ -100,7 +122,7 @@ def pdf_to_array(filepath):
     # extracting text from page
     extracted_text = page.extract_text()
 
-    return extracted_text
+    return extracted_text, thumbnail_path
 
 def verify_resume(extracted_text, client):
     count = 0

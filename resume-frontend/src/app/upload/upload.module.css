@@ -1,0 +1,100 @@
+.all_resumes{
+    display: flex;
+
+    gap: 20px;
+
+}
+
+.one_resume{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 300px;
+    width: 230px;
+    border-radius: 10px;
+
+    padding: 7px;
+    align-items: center;
+}
+.thumbnail{
+    filter: grayscale(100%);
+
+    z-index: -1x;
+    border-radius: 5px;
+}
+.thumbnail:hover{
+    opacity: 1;
+}
+
+.title{
+    font-size: 14px;
+    font-weight: 500;
+
+}
+
+.with_title{
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+
+    text-overflow: ellipsis;
+
+
+}
+
+
+
+.skill_container{
+
+    padding-left: 8px;
+    padding-right: 8px;
+
+
+    color: black;
+    z-index: 1000;
+    border-radius: 10px;
+    outline: 1px solid rgb(0, 0, 0);
+
+
+}
+.skill{
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+    /* mix-blend-mode: difference; */
+
+
+}
+
+.all_skills{
+    margin-top: auto;
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+
+    width: 100%;
+
+
+    padding-left: 5px;
+    padding-right: 5px;
+
+
+    gap: 10px;
+}
+.title_cont{
+
+    text-overflow: ellipsis " [..]";;
+    overflow: hidden;
+    width: 220px;
+    height: 1.2em;
+    white-space: nowrap;
+}
+
+.image_div{
+    z-index: 1;
+
+    height: 100%;
+    width:100%;
+    background-color: red;
+
+}

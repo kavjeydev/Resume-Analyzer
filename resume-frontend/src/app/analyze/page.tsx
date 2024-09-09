@@ -1,18 +1,16 @@
 'use client'
 
-import Link from "next/link";
+
 import Image from "next/image"
 import styles from "./page.module.css"
-import { useEffect, useState } from "react";
-import {user_info} from "../navbar/navbar"
+import { Suspense, useEffect, useState } from "react";
+import Upload from "../upload/upload";
 import { getResumes } from "../firebase/functions";
-import { sign } from "crypto";
-import { sendResponse } from "next/dist/server/image-optimizer";
-import { collection, Firestore, getDocs, getFirestore, query, where } from "firebase/firestore";
-import { getApp, initializeApp } from "firebase/app";
+import Client from "../client/client";
+import { onAuthStateChangedHelper } from "../firebase/firebase";
+import { useRouter } from 'next/navigation'
+import { User } from "firebase/auth";
 import Router from "next/router";
-import { firebaseConfig } from "./env";
-
 
 export interface Resume {
     id: string,
@@ -22,7 +20,8 @@ export interface Resume {
     top_skills: string[],
     role: string
 }
-
+var user_info_analyze: User | null = null;
+export {user_info_analyze}
 export function uuidv4() {
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
       (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
@@ -32,58 +31,47 @@ export function uuidv4() {
   console.log(uuidv4());
 
 export default function Analyze(){
-    var user_resumes:any = [];
+    const [user, setUser] = useState<User | null>(null);
+    const router = useRouter();
 
 
-    const app_init = (() => {
-        try{
-            return getApp();
+    const [validEmail, setValidEmail] = useState(false);
+
+    const authHelper = onAuthStateChangedHelper((user) => {
+        user_info_analyze = user;
+        setUser(user);
+
+        if(user?.email && validEmail == false){
+            router.push('/analyze');
+            setValidEmail(true);
+
         }
-        catch(any){
+        else if(!user?.email && validEmail == true){
+            router.push('/');
 
-              return initializeApp(firebaseConfig);
+            setValidEmail(false);
         }
+
     })
 
+    // if(!user_info?.email){
+
+    //     NextResponse.redirect('http://localhost:3000/signin')
+    //     return NextResponse.next()
+    // }
 
     useEffect(()=>{
+
         window.scrollTo(0,0);
       },[])
 
-    useEffect(() => {
-        const result = async () => {
-            try{
-            const app = app_init();
-            const db = getFirestore(app);
-            const resumeRef = collection(db, 'resumes');
+    // useEffect(() => {
+    //     const result = async () => {
 
+    //     }
 
-        // Create a query against the collection.
-            const q = query(resumeRef);
-
-            // const resumes_uploaded_by_user = getResumes();
-
-            const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((doc: any) => {
-            // doc.data() is never undefined for query doc snapshots
-                if(doc.data().uid == user_info?.uid){
-                    console.log(doc.id, " => ", doc.data().uid);
-                    user_resumes.push(doc.data());
-
-                }
-                console.log(user_resumes)
-
-            });
-
-            Router.reload()
-            }
-            catch{
-                console.log('error getting resumes')
-            }
-        }
-
-        result();
-    })
+    //     result();
+    // })
     console.log("RESULT", )
     async function send_resume(e: any){
         const inputted_file = e.target.files[0];
@@ -93,7 +81,7 @@ export default function Analyze(){
 
         var blob = inputted_file.slice(0, inputted_file.size);
         var unique_identity = uuidv4();
-        var newFile = new File([blob], `${user_info?.uid}-${unique_identity}#${inputted_file['name']}`);
+        var newFile = new File([blob], `${user?.uid}-${unique_identity}#${inputted_file['name']}`);
 
         console.log('New FIle', newFile)
 
@@ -110,7 +98,7 @@ export default function Analyze(){
 
             console.log('Updated File selected', form_data);
 
-            console.log('User Info', user_info?.uid)
+            console.log('User Info', user?.uid)
 
             console.log(form_data)
 
@@ -123,8 +111,10 @@ export default function Analyze(){
                 const process_request_json = await process_request.json();
                 let process_url = process_request_json['output'];
 
-                console.log("process url",process_url);
+                console.log("process url", process_url);
                 alert("file Successfully uploaded");
+
+                router.push('/analyze');
             }
 
 
@@ -140,20 +130,27 @@ export default function Analyze(){
                 <div className={styles.profile_container}>
                     <div className={styles.logo}>
                         {
-                            user_info?.photoURL ? (
-                                <Image width={35} height={35} className={styles.user_photo} src={user_info?.photoURL} alt="orange abs"/>
+                            user?.photoURL ? (
+                                <Image width={35} height={35} className={styles.user_photo} src={user?.photoURL} alt="orange abs"/>
                             ) :
                             (
-                                <Image width={35} height={35} className={styles.user_photo} src="/logo.png" alt="orange abs"/>
+                                <Image width={35} height={35} className={styles.user_photo} src="/icon.ico" alt="orange abs"/>
                             )
                         }
                     </div>
                         <h1 className={styles.user_name}>
-                            {user_info?.email?.split("@")[0]}
+                            {user?.email?.split("@")[0]}
                         </h1>
 
                 </div>
+                <div className={styles.upload_container} >
+                    <label className={styles.resume_upload}>
+                        <Image width={10} height={10} className={styles.user_photo} src='/plus.svg' alt="orange abs"/>
+                        <input id="upload" className={styles.upload_input} type="file" accept="application/pdf" onChange={send_resume}/>
 
+
+                    </label>
+                </div>
             </div>
 
             <div className={styles.right_col}>
@@ -161,17 +158,11 @@ export default function Analyze(){
                   <h1 className={styles.user_name}>
                       Your Resumes
                   </h1>
-
                 </div>
                 <div className={styles.all_resume_cont}>
-                  <div className={styles.upload_container}>
-                        {user_resumes.length}                    <label className={styles.resume_upload}>
-                      <Image width={10} height={10} className={styles.user_photo} src='/plus.svg' alt="orange abs"/>
-                      <input id="upload" className={styles.upload_input} type="file" accept="pdf/*" onChange={send_resume}/>
 
+                  <Suspense fallback={'Loading...'}><Upload /></Suspense>
 
-                    </label>
-                  </div>
                 </div>
 
             </div>

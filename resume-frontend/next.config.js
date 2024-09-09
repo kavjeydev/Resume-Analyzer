@@ -9,6 +9,7 @@ module.exports = {
           pathname: "/image/upload/**",
         },
       ],
-      domains: ['lh3.googleusercontent.com', 'avatars.githubusercontent.com'],
+      domains: ['storage.googleapis.com', 'lh3.googleusercontent.com', 'avatars.githubusercontent.com'],
     },
   };
+

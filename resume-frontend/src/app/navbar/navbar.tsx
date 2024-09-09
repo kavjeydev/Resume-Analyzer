@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation'
 
 var user_info: User | null = null;
 
-export { user_info }
+export {user_info}
 
 export default function Navbar(){
 

@@ -31,7 +31,7 @@
     top: 120px;
 
     margin-left: 120px;
-
+    align-items: center;
 
 
     width: 300px;
@@ -49,15 +49,15 @@
     flex-direction: column;
     position: relative;
 
+    overflow-y: scroll;
+    scrollbar-width: none;
 
 
     top: 120px;
 
-    background-color: red;
-
     margin-right: 120px;;
 
-    width: 1000px;
+    width: 100vw;
     height: 80vh;
 
     border-top-right-radius: 10px;
@@ -71,14 +71,15 @@
 
 .upload_input{
     display: none;
+
 }
 
 .resume_upload{
     border: 1px dashed #818181;
     display: flex;
 
-    height: 200px;
-    width: 150px;
+    height: 300px;
+    width: 260px;
 
     border-radius: 5px;
 
@@ -91,7 +92,13 @@
     justify-content: center;
 
     /* outline: 1px solid white; */
+    transition-duration: 0.2s;
 
+}
+
+.resume_upload:hover{
+    background-color: rgba(128, 128, 128, 0.358);
+    transition-duration: 0.2s;
 }
 
 .all_resume_cont{
@@ -105,12 +112,15 @@
 
 .upload_container{
     display: flex;
-    height: 200px;
-    width: 150px;
+    height: 300px;
+    width: 300px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .resume{
-    height: 200px;
+    height: 300px;
     width: 150px;
     background-color: red;
     color: white;
