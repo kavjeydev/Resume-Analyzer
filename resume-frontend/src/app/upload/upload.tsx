@@ -3,9 +3,10 @@ import { user_info_analyze } from "../analyze/page";
 import styles from './upload.module.css'
 import Image from "next/image"
 
+var resume_info:Resume[] = []
 export default async function Upload(){
     var user_resumes:Resume[] = await getResumes();
-
+    resume_info = await getResumes();;
     var colors = ['#ff8400', '#ffbb00', '#ffdd00']
     var text_colors = ['black', 'black', 'black']
 
@@ -66,4 +67,6 @@ export default async function Upload(){
 
 
     )
+
 }
+export {resume_info}

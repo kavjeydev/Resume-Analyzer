@@ -9,9 +9,11 @@ import { onAuthStateChangedHelper,
   signInwithEmailPassword,
   signInWithGoogle, signInWithGoogleNonPersistent,
   signInWithGooglePersistent } from "../firebase/firebase";
+  import { useRouter } from 'next/navigation'
 
 
 export default function Signin() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,6 +28,8 @@ export default function Signin() {
   }
 
   function signInWithGoogleProper(){
+
+    router.push('/analyze');
     signInWithGoogle(staySignedIn)
   }
 

@@ -11,6 +11,10 @@ import { onAuthStateChangedHelper } from "../firebase/firebase";
 import { useRouter } from 'next/navigation'
 import { User } from "firebase/auth";
 import Router from "next/router";
+import Link from "next/link";
+
+import { resume_info } from "../upload/upload";
+import Options from "../options/options";
 
 export interface Resume {
     id: string,
@@ -32,6 +36,7 @@ export function uuidv4() {
 
 export default function Analyze(){
     const [user, setUser] = useState<User | null>(null);
+    const [jobListing, setJobListing] = useState<string>('');
     const router = useRouter();
 
 
@@ -42,7 +47,8 @@ export default function Analyze(){
         setUser(user);
 
         if(user?.email && validEmail == false){
-            router.push('/analyze');
+            console.log('jherre')
+
             setValidEmail(true);
 
         }
@@ -138,11 +144,11 @@ export default function Analyze(){
                             )
                         }
                     </div>
-                        <h1 className={styles.user_name}>
+                        <h1 >
                             {user?.email?.split("@")[0]}
                         </h1>
 
-                </div>
+                    </div>
                 <div className={styles.upload_container} >
                     <label className={styles.resume_upload}>
                         <Image width={10} height={10} className={styles.user_photo} src='/plus.svg' alt="orange abs"/>
@@ -150,11 +156,20 @@ export default function Analyze(){
 
 
                     </label>
+
                 </div>
+                <div className={styles.links}>
+                    <Suspense fallback={'Loading...'}><Options /></Suspense>
+                    <input type="email" name="email" placeholder="Paste a job listing..." className={styles.typing_field} required onChange={e => { setJobListing(e.currentTarget.value); }}/>
+                    <Link href='/match' className={styles.link}>
+                        Match Resume with Listing ✨
+                    </Link>
+                </div>
+
             </div>
 
             <div className={styles.right_col}>
-            <div className={styles.profile_container}>
+                <div className={styles.profile_container}>
                   <h1 className={styles.user_name}>
                       Your Resumes
                   </h1>
