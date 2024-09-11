@@ -29,8 +29,9 @@ export default function Signin() {
 
   function signInWithGoogleProper(){
 
-    router.push('/analyze');
+
     signInWithGoogle(staySignedIn)
+
   }
 
 

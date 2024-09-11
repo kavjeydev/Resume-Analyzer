@@ -10,9 +10,8 @@ import Client from "../client/client";
 import { onAuthStateChangedHelper } from "../firebase/firebase";
 import { useRouter } from 'next/navigation'
 import { User } from "firebase/auth";
-import Router from "next/router";
-import Link from "next/link";
 
+import { resumeName } from "../options/options";
 import { resume_info } from "../upload/upload";
 import Options from "../options/options";
 
@@ -34,9 +33,11 @@ export function uuidv4() {
 
   console.log(uuidv4());
 
+
+
 export default function Analyze(){
     const [user, setUser] = useState<User | null>(null);
-    const [jobListing, setJobListing] = useState<string>('');
+    const [jobListing, setJobListing] = useState<any>(null);
     const router = useRouter();
 
 
@@ -60,25 +61,24 @@ export default function Analyze(){
 
     })
 
-    // if(!user_info?.email){
-
-    //     NextResponse.redirect('http://localhost:3000/signin')
-    //     return NextResponse.next()
-    // }
 
     useEffect(()=>{
 
         window.scrollTo(0,0);
       },[])
 
-    // useEffect(() => {
-    //     const result = async () => {
 
-    //     }
 
-    //     result();
-    // })
-    console.log("RESULT", )
+    async function sendResumeForMatching(e:any){
+        const form_data = new FormData();
+        form_data.append('file', resumeName);
+        form_data.append('listing', jobListing);
+
+        const process_request = await fetch('http://127.0.0.1:8080/get-insight', {
+            method: "POST",
+            body: form_data,
+        });
+    }
     async function send_resume(e: any){
         const inputted_file = e.target.files[0];
 
@@ -118,13 +118,16 @@ export default function Analyze(){
                 let process_url = process_request_json['output'];
 
                 console.log("process url", process_url);
+
                 alert("file Successfully uploaded");
 
-                router.push('/analyze');
+
             }
 
 
         }
+        // rout er.push('/');
+        router.refresh()
 
         e.target.value = null;
     }
@@ -158,13 +161,13 @@ export default function Analyze(){
                     </label>
 
                 </div>
-                <div className={styles.links}>
+                <form className={styles.links} name='analyze' onSubmit={sendResumeForMatching}>
                     <Suspense fallback={'Loading...'}><Options /></Suspense>
-                    <input type="email" name="email" placeholder="Paste a job listing..." className={styles.typing_field} required onChange={e => { setJobListing(e.currentTarget.value); }}/>
-                    <Link href='/match' className={styles.link}>
+                    <input type="text" name="job " placeholder="Paste a job listing..." className={styles.typing_field} required onChange={e => { setJobListing(e.currentTarget.value); }}/>
+                    <button  type="submit" className={styles.link} >
                         Match Resume with Listing ✨
-                    </Link>
-                </div>
+                    </button>
+                </form>
 
             </div>
 

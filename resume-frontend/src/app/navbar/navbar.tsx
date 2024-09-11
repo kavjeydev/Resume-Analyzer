@@ -36,7 +36,7 @@ export default function Navbar(){
         setUser(user);
         user_info = user;
         if(user?.email && validEmail == false){
-            // router.push('/analyze');
+            router.push('/analyze');
             setValidEmail(true);
 
         }
