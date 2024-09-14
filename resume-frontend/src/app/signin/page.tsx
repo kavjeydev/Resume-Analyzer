@@ -31,6 +31,7 @@ export default function Signin() {
 
 
     signInWithGoogle(staySignedIn)
+    // router.push('/analyze');
 
   }
 
@@ -38,6 +39,7 @@ export default function Signin() {
   function quixoticUserSignIn(){
     console.log(email, password)
     signInwithEmailPassword(email, password);
+    // router.push('/analyze');
   }
 
 

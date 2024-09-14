@@ -8,12 +8,15 @@ import Upload from "../upload/upload";
 import { getResumes } from "../firebase/functions";
 import Client from "../client/client";
 import { onAuthStateChangedHelper } from "../firebase/firebase";
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { User } from "firebase/auth";
 
 import { resumeName } from "../options/options";
 import { resume_info } from "../upload/upload";
+import { redirect } from 'next/navigation'
 import Options from "../options/options";
+import path from "path";
+
 
 export interface Resume {
     id: string,
@@ -24,6 +27,7 @@ export interface Resume {
     role: string
 }
 var user_info_analyze: User | null = null;
+var reroute = false;
 export {user_info_analyze}
 export function uuidv4() {
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
@@ -38,6 +42,8 @@ export function uuidv4() {
 export default function Analyze(){
     const [user, setUser] = useState<User | null>(null);
     const [jobListing, setJobListing] = useState<any>(null);
+    // const [reroute, setReroute] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<Boolean>(false);
     const router = useRouter();
 
 
@@ -61,24 +67,56 @@ export default function Analyze(){
 
     })
 
-
+    console.log(reroute);
     useEffect(()=>{
 
+        // if(reroute){
+        //     router.push('/results');
+        // }
         window.scrollTo(0,0);
       },[])
 
 
-
     async function sendResumeForMatching(e:any){
+        reroute = true;
         const form_data = new FormData();
         form_data.append('file', resumeName);
         form_data.append('listing', jobListing);
+        console.log(resumeName);
+        console.log(jobListing);
+        e.target.value = null;
 
+        setIsLoading(true);
         const process_request = await fetch('http://127.0.0.1:8080/get-insight', {
             method: "POST",
             body: form_data,
         });
+
+        if(process_request.ok){
+            const process_request_json = await process_request.json();
+            let process_url = process_request_json['code'];
+
+
+            console.log("process url", process_url);
+
+            if(process_url == 1){
+                alert("please enter valid information and try again");
+            }
+            else{
+                alert("file Successfully processed");
+                router.replace('/results')
+            }
+
+
+
+
+        }
+        setIsLoading(false);
+
+
     }
+
+
     async function send_resume(e: any){
         const inputted_file = e.target.files[0];
 
@@ -120,21 +158,22 @@ export default function Analyze(){
                 console.log("process url", process_url);
 
                 alert("file Successfully uploaded");
+                // router.refresh();
 
 
             }
 
 
         }
-        // rout er.push('/');
-        router.refresh()
+        router.replace(`/analyze`)
+        //
 
         e.target.value = null;
     }
 
     return(
         <div className={styles.total_container}>
-
+            {isLoading ? <div className={styles.loading_container}> <div className={styles.lds_ring}><div></div><div></div><div></div><div></div></div></div>  : null}
             <div className={styles.left_col}>
                 <div className={styles.profile_container}>
                     <div className={styles.logo}>
@@ -161,13 +200,13 @@ export default function Analyze(){
                     </label>
 
                 </div>
-                <form className={styles.links} name='analyze' onSubmit={sendResumeForMatching}>
+                <div className={styles.links}>
                     <Suspense fallback={'Loading...'}><Options /></Suspense>
-                    <input type="text" name="job " placeholder="Paste a job listing..." className={styles.typing_field} required onChange={e => { setJobListing(e.currentTarget.value); }}/>
-                    <button  type="submit" className={styles.link} >
+                    <input type="text" name="" placeholder="Paste a job listing..." className={styles.typing_field} required onChange={e => { setJobListing(e.target.value); }}/>
+                    <button className={styles.link} onClick={sendResumeForMatching}>
                         Match Resume with Listing ✨
                     </button>
-                </form>
+                </div>
 
             </div>
 

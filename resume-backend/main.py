@@ -3,13 +3,13 @@ from openai import OpenAI
 from pypdf import PdfReader
 from google.cloud import storage
 import validators
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, redirect, request
 from flask_cors import CORS
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db, firestore
 import json
-from models import Resume
+from models import Resume, ResumeInfo
 import os
 from dotenv import load_dotenv
 from pdf2image import convert_from_path
@@ -19,7 +19,7 @@ load_dotenv()
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 BUCKET_NAME = 'quixotic-processed-resumes'
-
+MINIMUM_RANGE_GLOBAL = 0
 THUMBNAIL_BUCKET = 'quixotic-processed-thumbnails'
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="./credentials.json"
 
@@ -213,6 +213,9 @@ def get_company(job_listing, client):
 
     company = (completion.choices[0].message.content)
 
+    if(len(company) > 25):
+        return ''
+
     return company
 
 def validate_job_listing(extracted_text, client):
@@ -246,7 +249,7 @@ def get_skills_technical_10(extracted_text, client):
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "user", "content": f"{extracted_text} What are the top 50 technical skills highlighted in this resume? Respond with just the 50 skills separated by \'#\' with no spaces and capitalize the beginning of every word please."}
+            {"role": "user", "content": f"{extracted_text} What are the top 50 technical skills highlighted in this resume? Respond with just the 50 skills separated by \'#\' with no spaces before or after the delimiter and capitalize the beginning of every word please."}
         ]
     )
 
@@ -260,7 +263,7 @@ def get_skills_soft_10(extracted_text, client):
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "user", "content": f"{extracted_text} What are the top 50 soft skills highlighted in this resume? Respond with just the 50 skills separated by \'#\' with no spaces and capitalize the beginning of every word please."}
+            {"role": "user", "content": f"{extracted_text} What are the top 50 soft skills highlighted in this resume? Respond with just the 50 skills separated by \'#\' with no spaces before or after the delimiter and capitalize the beginning of every word please."}
         ]
     )
 
@@ -342,11 +345,49 @@ def get_text_from_listing(listing):
     # print(output)
     return output
 
+def get_10_technical_from_company(company_name, role, level):
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "user", "content": f"what are the top 10 technical skills for a {level} {role} at {company_name}? please answer with just the technical skills separated by \'#\' with no spaces before or after the delimiter before or after the delimiter before or after please and capitalize the beginning of every word please."}
+        ]
+    )
+
+    tech_skills = (completion.choices[0].message.content).split('#')
+
+    return tech_skills
+
+def get_average_salaries(role, level, client):
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "user", "content": f"what are the average salaries for {level} {role} over the past 10 years, separated by a space and no commas and no dollar sign, don't say any other words"}
+        ]
+    )
+
+    avg_salary = (completion.choices[0].message.content).split(' ')
+
+    return avg_salary
+
+
+
+def get_10_soft_from_company(company_name, role, level):
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "user", "content": f"what are the top 10 soft skills for a {level} {role} at {company_name}? please answer with just the soft skills separated by \'#\' with no spaces before or after the delimiter before or after the delimiter please and capitalize the beginning of every word please."}
+        ]
+    )
+
+    tech_skills = (completion.choices[0].message.content).split('#')
+
+    return tech_skills
+
 def get_10_technical_from_listing(extracted_text, client):
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "user", "content": f"what are the top 10 technical skills in this listing: {extracted_text}? please answer with just the technical skills separated by \'#\' with no spaces please and capitalize the beginning of every word please."}
+            {"role": "user", "content": f"what are the top 10 technical skills in this listing: {extracted_text}? please answer with just the technical skills separated by \'#\' with no spaces before or after the delimiter before or after the delimiter please and capitalize the beginning of every word please."}
         ]
     )
 
@@ -358,7 +399,7 @@ def get_10_soft_from_listing(extracted_text, client):
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "user", "content": f"what are the top 10 soft skills in this listing: {extracted_text}? please answer with just the soft skills separated by \'#\' with no spaces please and capitalize the beginning of every word please."}
+            {"role": "user", "content": f"what are the top 10 soft skills in this listing: {extracted_text}? please answer with just the soft skills separated by \'#\' with no spaces before or after the delimiter before or after the delimiter please and capitalize the beginning of every word please."}
         ]
     )
 
@@ -370,7 +411,7 @@ def get_five_company_values(company, client):
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "user", "content": f"what are the top 5 culture values for {company}? please answer with just the culture values separated by \'#\' with no spaces please"}
+            {"role": "user", "content": f"what are the top 5 culture values for {company}? please answer with just the culture values separated by \'#\' with no spaces before or after the delimiter before or after the delimiter please"}
         ]
     )
 
@@ -396,10 +437,18 @@ def get_file_from_bucket(bucket_name, filename, dest_filename):
     print("content", blob.download_to_filename(folder_path + '/' + dest_filename))
 
 
-def process_resume_all(filename, listing_text): # PUT ANALYZE STUFF TOGETHER HERE
+
+async def process_resume_all(filename, listing_text): # PUT ANALYZE STUFF TOGETHER HERE
     filepath = f'./process/{filename}'
     get_file_from_bucket(BUCKET_NAME, filename, filename)
     extracted_text_pdf = pdf_to_array(filepath)
+
+    user_id = filename.split('-')[0] # UID, FILENAME
+
+    top_skills = get_skills(extracted_text_pdf, client) # TOP_SKILL
+
+
+
 
     valid_listing = validate_job_listing(listing_text, client)
     count = 0
@@ -409,8 +458,11 @@ def process_resume_all(filename, listing_text): # PUT ANALYZE STUFF TOGETHER HER
         if (valid_listing):
             break
 
-    company = get_company(listing_text, client)
-    min_range, max_range = get_listing_salary_range(listing_text, client)
+    company = get_company(listing_text, client) # COMPANY_NAME
+    min_range_listing, max_range_listing = get_listing_salary_range(listing_text, client) # LISTING MIN, LISTING MAX
+
+
+
 
     top_10_techical_resume_skills = get_skills_technical_10(extracted_text_pdf, client)
     top_10_soft_resume_skills = get_skills_soft_10(extracted_text_pdf, client)
@@ -421,15 +473,36 @@ def process_resume_all(filename, listing_text): # PUT ANALYZE STUFF TOGETHER HER
     soft_skills_to_add = []
     tech_skills_to_add = []
 
+    role = get_profession(extracted_text_pdf, client) # ROLE
+    level = get_level(extracted_text_pdf, client) # JOB_LEVEL
+
+    company_salary_min, company_salary_max = get_company_salary_range(level, role, company, client) # company_role_min_salary, company_role_max_salary
+
+    market_salary_min, market_salary_max = get_general_salary_range(level, role, client) # market_min_salary, market_min_salary
+
+    if(len(top_10_technical_listing[0]) > 50):
+        top_10_technical_listing = get_10_technical_from_company(company, role, level)
+
+    if(len(top_10_soft_listing[0]) > 50):
+        top_10_soft_listing = get_10_soft_from_company(company, role, level)
+
     for skill in top_10_soft_listing:
         if skill not in top_10_soft_resume_skills:
-            soft_skills_to_add.append(skill)
+            soft_skills_to_add.append(skill) # ss_to_add
 
     for skill in top_10_technical_listing:
         if skill not in top_10_techical_resume_skills:
-            tech_skills_to_add.append(skill)
+            tech_skills_to_add.append(skill) # ts_to_add
 
-    print(company, min_range, max_range, soft_skills_to_add, tech_skills_to_add)
+    avg_salaries = get_average_salaries(role, level, client) # 10 Year progression
+    print (company, min_range_listing, max_range_listing, soft_skills_to_add, tech_skills_to_add, avg_salaries)
+
+    doc_ref = db.collection(u'user_resume_info')
+    doc_ref.document(user_id).set(ResumeInfo(user_id, filename, role, level, top_skills, min_range_listing, max_range_listing, company_salary_min, company_salary_max, company, market_salary_min, market_salary_max, avg_salaries, soft_skills_to_add, tech_skills_to_add).to_dict())
+
+    # return (company, min_range_listing, max_range_listing, soft_skills_to_add, tech_skills_to_add, avg_salaries)
+
+
 
 
 @app.route("/api/home", methods=["GET"])
@@ -453,19 +526,28 @@ def process_file():
     })
 
 
-@app.route('/get-insight', methods=['POST', 'GET'])
+@app.route('/get-insight', methods=['POST'])
 def match_with_listing():
+
+    MIN_RANGE = 0
     gcp_filename = (request.form['file'])
     job_listing = request.form['listing']
 
-    extracted_text = get_text_from_listing(job_listing)
+    try:
+        extracted_text = get_text_from_listing(job_listing)
+    except:
+        return jsonify({
+            'code': 1,
+        })
 
-    process_resume_all(gcp_filename, extracted_text)
+    asyncio.run(process_resume_all(gcp_filename, extracted_text))
 
 
     return jsonify({
-        'output': 'hi'
+        'code': 0,
     })
+
+
 
 if(__name__ == '__main__'):
     app.run(debug=True, port=8080)

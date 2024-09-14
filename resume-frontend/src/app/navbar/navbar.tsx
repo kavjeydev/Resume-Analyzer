@@ -9,7 +9,7 @@ import { signOut } from "../firebase/firebase";
 import { onAuthStateChangedHelper } from "../firebase/firebase";
 import { useRouter } from 'next/navigation'
 
-
+import { usePathname } from 'next/navigation'
 
 
 var user_info: User | null = null;
@@ -21,7 +21,6 @@ export default function Navbar(){
     const [user, setUser] = useState<User | null>(null);
     const router = useRouter();
 
-
     const [validEmail, setValidEmail] = useState(false);
 
     function signOutRedirect(){
@@ -31,12 +30,16 @@ export default function Navbar(){
     }
 
     // useEffect(() => {
+    var path = usePathname();
     const authHelper = onAuthStateChangedHelper((user) => {
 
         setUser(user);
         user_info = user;
+
         if(user?.email && validEmail == false){
-            router.push('/analyze');
+            if(path == '/signin'){
+                router.push('/analyze');
+            }
             setValidEmail(true);
 
         }
