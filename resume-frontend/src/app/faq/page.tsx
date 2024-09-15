@@ -35,8 +35,7 @@ export default function FAQ(){
       <div className={styles.all_questions}>
         <div className={styles.question_container} id="question_container">
             <h1 className={styles.question}>Is my data safe with Quixotic?</h1>
-            <h1 className={styles.answer}>Yes! All data is private and meant for the user and the user only. No, the data is not sold. Feel free to black out
-              any personal information as well, our algorithm does not use it.
+            <h1 className={styles.answer}>Feel free to censor any personal information, our algorithm does not use it. No, the data is not sold.
             </h1>
         </div>
 

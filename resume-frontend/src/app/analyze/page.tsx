@@ -103,7 +103,6 @@ export default function Analyze(){
                 alert("please enter valid information and try again");
             }
             else{
-                alert("file Successfully processed");
                 router.replace('/results')
             }
 

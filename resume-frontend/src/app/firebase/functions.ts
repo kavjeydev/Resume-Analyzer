@@ -34,6 +34,24 @@ export interface Resume {
     job_level: string
 }
 
+export interface ResumeInfo {
+    uid: string,
+    filename: string,
+    top_skills: string[],
+    role: string,
+    job_level: string,
+    company_name: string,
+    listing_min_salary: string,
+    listing_max_salary: string,
+    company_role_min_salary: string,
+    company_role_max_salary: string,
+    market_min_salary: string,
+    market_max_salary: string,
+    ten_year_progression: string[],
+    ss_to_add: string[],
+    ts_to_add: string[],
+}
+
 export interface Thumbnail {
     id?: string,
     uid?: string,
@@ -68,12 +86,40 @@ const app_init = (() => {
     }
 })
 
+export async function getResumeInfo(){
+    var user_resume_info: any = [];
+
+    const app = app_init();
+    const db = getFirestore(app);
+    const resumeRef = collection(db, 'user_resume_info');
+
+    const q = query(resumeRef);
+
+        // const resumes_uploaded_by_user = getResumes();
+
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc: any) => {
+    // doc.data() is never undefined for query doc snapshots
+        // if(doc.data().uid == user_info?.uid){
+            // console.log(doc.id, " => ", doc.data().uid);
+            user_resume_info.push(doc.data());
+
+        // }
+        // console.log(user_resumes)
+
+    });
+
+    return user_resume_info;
+
+
+}
+
 export async function getResumes(){
     var user_resumes:any = [];
     // try{
-        const app = app_init();
-        const db = getFirestore(app);
-        const resumeRef = collection(db, 'resumes');
+    const app = app_init();
+    const db = getFirestore(app);
+    const resumeRef = collection(db, 'resumes');
 
 
     // Create a query against the collection.
@@ -90,7 +136,7 @@ export async function getResumes(){
 
             // }
             // console.log(user_resumes)
-            return user_resumes as Resume[];
+            // return user_resumes as Resume[]; // ???
 
         });
 

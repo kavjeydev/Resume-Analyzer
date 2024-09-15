@@ -458,7 +458,7 @@ async def process_resume_all(filename, listing_text): # PUT ANALYZE STUFF TOGETH
         if (valid_listing):
             break
 
-    company = get_company(listing_text, client) # COMPANY_NAME
+    company_n = get_company(listing_text, client) # COMPANY_NAME
     min_range_listing, max_range_listing = get_listing_salary_range(listing_text, client) # LISTING MIN, LISTING MAX
 
 
@@ -476,15 +476,15 @@ async def process_resume_all(filename, listing_text): # PUT ANALYZE STUFF TOGETH
     role = get_profession(extracted_text_pdf, client) # ROLE
     level = get_level(extracted_text_pdf, client) # JOB_LEVEL
 
-    company_salary_min, company_salary_max = get_company_salary_range(level, role, company, client) # company_role_min_salary, company_role_max_salary
+    company_salary_min, company_salary_max = get_company_salary_range(level, role, company_n, client) # company_role_min_salary, company_role_max_salary
 
     market_salary_min, market_salary_max = get_general_salary_range(level, role, client) # market_min_salary, market_min_salary
 
     if(len(top_10_technical_listing[0]) > 50):
-        top_10_technical_listing = get_10_technical_from_company(company, role, level)
+        top_10_technical_listing = get_10_technical_from_company(company_n, role, level)
 
     if(len(top_10_soft_listing[0]) > 50):
-        top_10_soft_listing = get_10_soft_from_company(company, role, level)
+        top_10_soft_listing = get_10_soft_from_company(company_n, role, level)
 
     for skill in top_10_soft_listing:
         if skill not in top_10_soft_resume_skills:
@@ -495,10 +495,10 @@ async def process_resume_all(filename, listing_text): # PUT ANALYZE STUFF TOGETH
             tech_skills_to_add.append(skill) # ts_to_add
 
     avg_salaries = get_average_salaries(role, level, client) # 10 Year progression
-    print (company, min_range_listing, max_range_listing, soft_skills_to_add, tech_skills_to_add, avg_salaries)
+    print (company_n, min_range_listing, max_range_listing, soft_skills_to_add, tech_skills_to_add, avg_salaries)
 
     doc_ref = db.collection(u'user_resume_info')
-    doc_ref.document(user_id).set(ResumeInfo(user_id, filename, role, level, top_skills, min_range_listing, max_range_listing, company_salary_min, company_salary_max, company, market_salary_min, market_salary_max, avg_salaries, soft_skills_to_add, tech_skills_to_add).to_dict())
+    doc_ref.document(user_id).set(ResumeInfo(user_id, filename, role, level, top_skills, min_range_listing, max_range_listing, company_salary_min, company_salary_max, company_n, market_salary_min, market_salary_max, avg_salaries, soft_skills_to_add, tech_skills_to_add).to_dict())
 
     # return (company, min_range_listing, max_range_listing, soft_skills_to_add, tech_skills_to_add, avg_salaries)
 
