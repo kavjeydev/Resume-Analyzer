@@ -1,6 +1,6 @@
 
 class Resume:
-    def __init__(self, id, uid, filename, thumbnail, top_skills, role, job_level):
+    def __init__(self, id, uid, filename, thumbnail, top_skills, role, job_level, company_culture):
         self.id = id
         self.uid = uid
         self.filename = filename
@@ -27,7 +27,7 @@ class Resume:
 class ResumeInfo:
     def __init__(self, uid, filename, role, job_level, top_skills, listing_min_salary, listing_max_salary, company_role_min_salary,
                  company_role_max_salary,company_name, market_min_salary, market_max_salary,
-                 ten_year_progression, ss_to_add, ts_to_add):
+                 ten_year_progression, ss_to_add, ts_to_add, company_culture):
 
         self.uid = uid
         self.filename = filename # resume name
@@ -48,6 +48,8 @@ class ResumeInfo:
         self.ten_year_progression = ten_year_progression
         self.ss_to_add = ss_to_add
         self.ts_to_add = ts_to_add
+
+        self.company_culture = company_culture
 
     def to_dict(self):
         resume_dict = {}
@@ -72,6 +74,8 @@ class ResumeInfo:
         resume_dict['ten_year_progression'] = self.ten_year_progression
         resume_dict['ss_to_add'] = self.ss_to_add
         resume_dict['ts_to_add'] = self.ts_to_add
+
+        resume_dict['company_culture'] = self.company_culture
 
 
         return resume_dict

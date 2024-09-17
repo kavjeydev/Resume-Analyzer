@@ -201,10 +201,12 @@ export default function Analyze(){
                 </div>
                 <div className={styles.links}>
                     <Suspense fallback={'Loading...'}><Options /></Suspense>
-                    <input type="text" name="" placeholder="Paste a job listing..." className={styles.typing_field} required onChange={e => { setJobListing(e.target.value); }}/>
+                    <textarea  name="" placeholder="Paste a job listing link or text..." className={styles.typing_field} required onChange={e => { setJobListing(e.target.value); }}/>
                     <button className={styles.link} onClick={sendResumeForMatching}>
                         Match Resume with Listing ✨
                     </button>
+
+                    <h1 className={styles.tip}>Tip: Pasting text from the listing yields more accurate results than pasting the listing link.</h1>
                 </div>
 
             </div>

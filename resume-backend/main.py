@@ -411,7 +411,7 @@ def get_five_company_values(company, client):
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "user", "content": f"what are the top 5 culture values for {company}? please answer with just the culture values separated by \'#\' with no spaces before or after the delimiter before or after the delimiter please"}
+            {"role": "user", "content": f"what are the top 5 culture values for {company}? please answer with just the culture values separated by \'#\' with no spaces before or after the delimiter before or after the delimiter please, capitalize the first letter of each culture value"}
         ]
     )
 
@@ -463,7 +463,6 @@ async def process_resume_all(filename, listing_text): # PUT ANALYZE STUFF TOGETH
 
 
 
-
     top_10_techical_resume_skills = get_skills_technical_10(extracted_text_pdf, client)
     top_10_soft_resume_skills = get_skills_soft_10(extracted_text_pdf, client)
 
@@ -496,9 +495,11 @@ async def process_resume_all(filename, listing_text): # PUT ANALYZE STUFF TOGETH
 
     avg_salaries = get_average_salaries(role, level, client) # 10 Year progression
     print (company_n, min_range_listing, max_range_listing, soft_skills_to_add, tech_skills_to_add, avg_salaries)
+    top_5_company_culture = get_five_company_values(company_n, client)
+
 
     doc_ref = db.collection(u'user_resume_info')
-    doc_ref.document(user_id).set(ResumeInfo(user_id, filename, role, level, top_skills, min_range_listing, max_range_listing, company_salary_min, company_salary_max, company_n, market_salary_min, market_salary_max, avg_salaries, soft_skills_to_add, tech_skills_to_add).to_dict())
+    doc_ref.document(user_id).set(ResumeInfo(user_id, filename, role, level, top_skills, min_range_listing, max_range_listing, company_salary_min, company_salary_max, company_n, market_salary_min, market_salary_max, avg_salaries, soft_skills_to_add, tech_skills_to_add, top_5_company_culture).to_dict())
 
     # return (company, min_range_listing, max_range_listing, soft_skills_to_add, tech_skills_to_add, avg_salaries)
 
@@ -533,12 +534,18 @@ def match_with_listing():
     gcp_filename = (request.form['file'])
     job_listing = request.form['listing']
 
-    try:
-        extracted_text = get_text_from_listing(job_listing)
-    except:
-        return jsonify({
-            'code': 1,
-        })
+    if(len(job_listing) > 500):
+        extracted_text = job_listing
+    else:
+        try:
+            extracted_text = get_text_from_listing(job_listing)
+        except:
+            return jsonify({
+                'code': 1,
+            })
+
+    if(len(extracted_text) > 199999):
+        extracted_text = extracted_text[0:199999]
 
     asyncio.run(process_resume_all(gcp_filename, extracted_text))
 

@@ -40,7 +40,14 @@ export default function Results(){
 
     return (
         <div className={styles.outer_container}>
-            <Suspense fallback={'Loading...'}><GeneralInfo /></Suspense>
+                <div className={styles.left_col}>
+                    Somthing
+                </div>
+                <div className={styles.right_col}>
+                    <Suspense fallback={'Loading...'}><GeneralInfo /></Suspense>
+                </div>
+
+
         </div>
     )
 }

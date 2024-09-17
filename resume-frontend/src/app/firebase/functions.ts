@@ -50,6 +50,7 @@ export interface ResumeInfo {
     ten_year_progression: string[],
     ss_to_add: string[],
     ts_to_add: string[],
+    company_culture: string[],
 }
 
 export interface Thumbnail {
