@@ -1,6 +1,6 @@
 
 class Resume:
-    def __init__(self, id, uid, filename, thumbnail, top_skills, role, job_level, company_culture):
+    def __init__(self, id, uid, filename, thumbnail, top_skills, role, job_level):
         self.id = id
         self.uid = uid
         self.filename = filename

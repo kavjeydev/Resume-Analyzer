@@ -12,6 +12,8 @@ import { useState } from 'react';
 
 export default async function GeneralInfo(){
     const [salaryProgression, setSalaryProgression] = useState<string[]>([]);
+    var colors = ['#ff8400', '#ffbb00', '#ffdd00']
+    var text_colors = ['black', 'black', 'black']
 
     const inflationRates = [0.008, 0.007, 0.021, 0.021, 0.019, 0.023, 0.014, 0.07, 0.065, 0.034, 0.025];
 
@@ -53,13 +55,13 @@ export default async function GeneralInfo(){
         ssr: false,
       });
       const data = {
-        labels: ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'],
+        labels: ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023'],
         datasets: [
           {
             label: 'Salary Progression',
             data: salaries_int,
             fill: true,
-            borderColor: 'rgb(75, 192, 192)',
+            borderColor: 'orange',
             tension: 0.1,
           },
           {
@@ -75,7 +77,7 @@ export default async function GeneralInfo(){
 
     const LineChart = () => {
         return (
-          <div style={{ width: '700px', height: '500px' }}>
+          <div style={{ width: '700px', height: '400px' }}>
             <h1>Career Progression vs Inflation</h1>
             <Line data={data}/>
           </div>
@@ -112,9 +114,9 @@ export default async function GeneralInfo(){
 
                                     <div className={styles.bottom_half}>
                                         <div className={styles.company_culture_container}>
-                                            <h1 className={styles.company_name}>
+                                            <div className={styles.company_name}>
                                                 {res.company_name} Culture
-                                            </h1>
+                                            </div>
                                             <div className={styles.culture_list}>
                                                 {
                                                     res.company_culture.map((culture) => (
@@ -127,6 +129,42 @@ export default async function GeneralInfo(){
                                         </div>
                                         <div className={styles.skills_and_graph}>
                                             <LineChart />
+                                        </div>
+                                    </div>
+
+
+                                    <div className={styles.skill_container}>
+                                        <div className={styles.tech_container}>
+                                            <div className={styles.header}>
+                                                Technical Skills to Emphasize
+                                            </div>
+                                            <div className={styles.tech_skill_container} >
+                                                {
+                                                    res.ts_to_add.map((skill, index) => (
+
+                                                            <div className={styles.tech_skill} style={{ backgroundColor: colors[index % 3], borderRadius: '5px' }}>
+                                                                {skill}
+                                                            </div>
+
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                        <div className={styles.soft_container}>
+                                                <div className={styles.header}>
+                                                    Soft Skills to Emphasize
+                                                </div>
+                                                <div className={styles.soft_skill_container} >
+                                                {
+                                                    res.ss_to_add.map((skill, index) => (
+
+                                                            <div className={styles.soft_skill} style={{ backgroundColor: colors[index % 3], borderRadius: '5px' }}>
+                                                                {skill}
+                                                            </div>
+
+                                                    ))
+                                                }
+                                                </div>
                                         </div>
                                     </div>
                                 </div>

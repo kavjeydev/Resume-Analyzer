@@ -11,6 +11,9 @@
 
 }
 .left_col{
+
+    display: flex;
+    flex-direction: column;
     position: relative;
     background-color: rgb(17, 17, 17);
     padding: 20px;
@@ -24,13 +27,14 @@
     width: 300px;
     height: 80vh;
 
-    align-items: center;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+
+    gap: 10px;
 }
 .right_col{
     position: relative;
-    background-color: rgb(24, 24, 24);
+    background-color: rgb(0, 0, 0);
     padding: 20px;
 
     border-top-right-radius: 10px;
@@ -59,4 +63,42 @@
     width: 100vw;
 
     gap: 0px;
+}
+
+.header{
+    font-weight: 700;
+    font-size: 18px;
+
+    color: orange;
+}
+
+.general{
+    background-color: rgb(49, 49, 49);
+    height: 30px;
+    text-align: center;
+
+    border-radius: 10px;
+
+    line-height: 30px;;
+
+
+}
+
+.other{
+
+    color: gray;
+    background-color: rgb(17, 17, 17);
+    height: 30px;
+    text-align: center;
+
+    border-radius: 10px;
+
+    line-height: 30px;
+
+    transition-duration: 0.2s;
+}
+
+.other:hover{
+    background-color: rgb(27, 27, 27);
+    transition-duration: 0.2s;
 }

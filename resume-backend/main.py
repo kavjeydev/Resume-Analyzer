@@ -411,7 +411,7 @@ def get_five_company_values(company, client):
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "user", "content": f"what are the top 5 culture values for {company}? please answer with just the culture values separated by \'#\' with no spaces before or after the delimiter before or after the delimiter please, capitalize the first letter of each culture value"}
+            {"role": "user", "content": f"what are the top 15 culture values for {company}? please answer with just the culture values separated by \'#\' with no spaces before or after the delimiter before or after the delimiter please, capitalize the first letter of each culture value"}
         ]
     )
 

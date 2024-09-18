@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from 'react'
 import GeneralInfo from '../processed-info-general/general_info'
+import {Tooltip} from "@nextui-org/tooltip";
 import styles from './page.module.css'
 import { User } from 'firebase/auth';
 import { onAuthStateChangedHelper } from '../firebase/firebase';
@@ -41,7 +42,51 @@ export default function Results(){
     return (
         <div className={styles.outer_container}>
                 <div className={styles.left_col}>
-                    Somthing
+                    <div className={styles.header}>
+                        Menu
+                    </div>
+
+                        <button className={styles.general}>
+                            Skills Insight
+                        </button>
+                    <Tooltip
+                    showArrow
+                    placement="right"
+                    content="Coming Soon"
+                    classNames={{
+                        base: [
+                        // arrow color
+                        "before:bg-neutral-400 dark:before:bg-white",
+                        ],
+                        content: [
+                        "py-2 px-4 shadow-xl",
+                        "text-black bg-gradient-to-br from-white to-neutral-400",
+                        ],
+                    }}
+                    >
+                    <button className={styles.other}>
+                        Line by Line Insight
+                    </button>
+                    </Tooltip>
+                    <Tooltip
+                    showArrow
+                    placement="right"
+                    content="Coming Soon"
+                    classNames={{
+                        base: [
+                        // arrow color
+                        "before:bg-neutral-400 dark:before:bg-white",
+                        ],
+                        content: [
+                        "py-2 px-4 shadow-xl",
+                        "text-black bg-gradient-to-br from-white to-neutral-400",
+                        ],
+                    }}
+                    >
+                    <button className={styles.other}>
+                        Match Score
+                    </button>
+                    </Tooltip>
                 </div>
                 <div className={styles.right_col}>
                     <Suspense fallback={'Loading...'}><GeneralInfo /></Suspense>

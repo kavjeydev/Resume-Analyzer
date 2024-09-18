@@ -144,7 +144,7 @@ export default function Analyze(){
             console.log('User Info', user?.uid)
 
             console.log(form_data)
-
+            setIsLoading(true);
             const process_request = await fetch('http://127.0.0.1:8080/process', {
                 method: "POST",
                 body: form_data,
@@ -164,6 +164,7 @@ export default function Analyze(){
 
 
         }
+        setIsLoading(false);
         router.replace(`/analyze`)
         //
 
