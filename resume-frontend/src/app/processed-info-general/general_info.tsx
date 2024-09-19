@@ -136,7 +136,7 @@ export default async function GeneralInfo(){
                                     <div className={styles.skill_container}>
                                         <div className={styles.tech_container}>
                                             <div className={styles.header}>
-                                                Technical Skills to Emphasize
+                                                Technical Skills Missing
                                             </div>
                                             <div className={styles.tech_skill_container} >
                                                 {
@@ -152,7 +152,7 @@ export default async function GeneralInfo(){
                                         </div>
                                         <div className={styles.soft_container}>
                                                 <div className={styles.header}>
-                                                    Soft Skills to Emphasize
+                                                    Soft Skills Missing
                                                 </div>
                                                 <div className={styles.soft_skill_container} >
                                                 {
